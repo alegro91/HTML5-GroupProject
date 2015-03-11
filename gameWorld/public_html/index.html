@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+        <script type="text/javascript">
+
+            function getArrows(ev) {
+
+                arrows = ((ev.which) || (ev.keyCode));
+
+                switch (arrows) {
+
+                    case 37:
+                        playerX = playerX - playerStep;
+                        clearCanvas()
+                        drawPlayer();
+                        break;
+
+                    case 38:
+                        playerY = playerY - playerStep;
+                        clearCanvas()
+                        drawPlayer();
+                        break;
+
+                    case 39:
+                        playerX = playerX + playerStep;
+                        clearCanvas()
+                        drawPlayer();
+                        break;
+
+                    case 40:
+                        playerY = playerY + playerStep;
+                        clearCanvas()
+                        drawPlayer();
+                        break;
+                }
+            }
+        </script>
+    </head>
+
+    <body  onkeydown="getArrows(event)">
+
+    <canvas id="gameWorld" width="800" height="640"></canvas>
+
+    <script>
+        var canvas = document.getElementById('gameWorld');
+        var context = canvas.getContext('2d');
+        var playerX = 200;
+        var playerY = 200;
+        var playerRadius = 10;
+        var playerStep = 10;
+
+        function drawPlayer()
+        {
+            context.beginPath();
+            context.arc(playerX, playerY, playerRadius, 0, 2 * Math.PI, false);
+            context.fillStyle = 'green';
+            context.fill();
+            context.lineWidth = 5;
+            context.strokeStyle = '#003300';
+            context.stroke();
+        }
+
+        function clearCanvas()
+        {
+            context.beginPath();
+            context.rect(0, 0, canvas.width, canvas.height);
+            context.fillStyle = 'white';
+            context.fill();
+            context.lineWidth = 3;
+            context.strokeStyle = 'black';
+            context.stroke();
+        }
+    </script>
+</body>
+</html>
