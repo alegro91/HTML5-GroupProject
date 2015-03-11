@@ -1,0 +1,317 @@
+/* 
+    Created on : Feb 19, 2015, 12:10:28 PM
+    Author     : Tor-Martin Holen
+*/
+
+/*ETC*/
+h1, h2, h3, h4, h5, h6{
+    margin-left : 1vw;
+    margin-right: 1vw;
+}
+p{
+    margin-left: 2vw;
+    margin-right: 2vw
+}
+h1, h2, h3, p, small, i, b{
+    color: #00ffff;
+    font-size: 1em;
+}
+a{
+    color: #6699ff;
+    text-decoration: none;
+}
+a:hover{
+    color: #66ffff;
+}
+
+.star{
+    font-size: 0.3em;
+}
+body{
+    background-color: #111111;
+    margin:0;
+    padding: 0;
+    min-height: 800px;
+    overflow: hidden;
+}
+
+/*Navigation*/
+nav{
+    background: linear-gradient(180deg ,#111111, #222222, #333333, #222222, #111111);
+    border-bottom: 1px solid #aaaaaa;
+    margin: 0;
+    position: fixed;
+    display: inline-block;
+    width: 100vw;
+    height: 4vh;
+    text-align: center;
+    z-index: 2;
+
+
+}
+nav ul{
+    padding: 0;
+    margin: 0;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+
+}
+
+nav ul li{
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 2px 0 2px;
+}
+nav ul li a {
+    color: #6699ff;
+    text-align: center;
+}
+
+
+/*Main-content*/
+#headerAndMainContainer{
+    background-color: #111111;
+    position: fixed;
+    width: 72vw;
+    height: 93vh;
+    top: 4vh;
+    margin: 0 0 0 14vw;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+main{
+    margin-top:1vh;
+}
+
+header{
+
+}
+
+#logo{
+    display: block;
+    margin-left: auto;
+    margin-right: auto ;
+}
+#logo:hover{
+    background-color: #666666
+}
+.container{
+    display:block;
+    width: 553px;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto ;
+}
+
+/*Sidebars*/
+aside {
+    /*    background: linear-gradient(-90deg, #111133, #111566, #111133);*/
+    background: linear-gradient(-90deg, #000000, #222222, #000000);
+    border-right: 1px solid #aaaaaa;
+    position: fixed;
+    width: 14vw;
+    height: 93vh;
+    top: 4vh;
+    z-index: 1;
+}
+#Right {
+    margin: 0 0 0 86vw;
+    border-right: 0 solid #aaaaaa;
+    border-left: 1px solid #aaaaaa;
+}
+
+/*Footer*/
+footer{
+    background: linear-gradient(180deg ,#111111, #222222, #333333, #222222, #111111);
+    border-top: 1px solid #aaaaaa;
+    position: fixed;
+    width: 100vw;
+    height: 3vh;
+    top: 97vh;
+    text-align: center;
+    z-index: 2;
+    overflow-y: hidden;
+}
+footer small i a{
+    color: #00ffff;
+}
+footer small i a:hover{
+    color: #6699ff;
+}
+#footerContainer{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/*Index-page new-content container*/
+.divInlineBlockContainer{ 
+    display: inline-block;
+    width: 32vw;
+    min-height: 200px;
+    height: 18vh;
+    background-color:  #222222;
+    overflow-y: auto;
+}
+
+
+.divInlineBlockContainer:hover{
+    background-color:  #444444;
+}
+
+.divInlineBlockContainer h2{
+    text-align: center;
+    color: #6699ff;
+}
+
+.divInlineBlockContainer p, .divInlineBlockContainer h3{
+    text-overflow: clip;
+    text-align: left;
+}
+
+.divInlineBlockContainer img{
+    float: right;
+    padding-right: 1vw;
+}
+
+.blogContainer{
+    width: 64vw;
+    height: auto;
+}
+
+.imgDisplayer{
+    display: inline-block;
+    width: 300px;
+    height: auto;
+
+}
+
+.autoHeight{
+    height: auto;
+    min-height: 0;
+}
+
+
+.center:first-child{
+    text-align: center;
+}
+
+/*Fix to centered elements*/
+main .center a{
+    text-decoration: none;
+}
+
+.noMarginLeft{
+    margin-left: 0;
+    margin-right: 0;
+}
+
+
+/*Embeded content styling*/
+embed{
+    border: 4px solid #444444;
+}
+.tennisRacket{
+    width: 40vw;
+    height: 40vw;
+}
+
+
+/*Table styling*/
+
+table{
+    color: #ffffff;
+    margin: 0 auto 0 auto;
+}
+table td, table th{
+    border: 3px solid #444444;
+}
+
+
+
+/* Hides footer and increases navigation height */
+@media only screen and (max-height:768px){
+    footer{
+        display:none;
+    }
+    nav{
+        height: 7vh;
+    }
+    #headerAndMainContainer{
+        top: 7vh;
+    }
+    aside{
+        top: 7vh;
+    }
+}
+
+
+@media only screen and (min-width: 0px) and (max-width: 720px){
+    .divInlineBlockContainer{
+        min-width: 90vw;
+        height: auto;
+    }
+
+}
+
+@media only screen and (min-width: 721px) and (max-width: 1300px){    
+    .divInlineBlockContainer{
+        min-width: 48vw;
+    }
+}
+
+/* Hide sidebars and  width-correction to main , footer and table image elements*/
+@media only screen and (min-width: 0px) and (max-width: 1300px){
+    aside{
+        display: none;
+    }
+
+    #headerAndMainContainer{
+        width: 100vw;
+        height: 93vh;
+        margin: 0;
+    }
+
+    footer{
+        width: 100vw;
+        height: 3vh;
+        margin: 0;
+    }
+
+    .profilePicture{
+        max-width:100px;
+        max-height: 100px;
+    }
+}
+
+/* Changes image-size*/
+@media only screen and (min-width: 0px) and (max-width: 547px){
+    #logo{
+        width: 100vw;
+        height: auto;
+    }
+    .container{
+        width: 100vw;
+        height: auto;
+    }
+
+}
+
+/*Changes font-size*/
+@media only screen and (min-width: 0px) and (max-width: 720px){
+    nav ul li a{
+        font-size: 0.6em;
+    }
+}
+
+
+@media only screen and (min-width: 768px) and (min-height: 1024px){
+    nav ui li a{
+        font-size: 1.7em;
+    }
+}
+
+
+
