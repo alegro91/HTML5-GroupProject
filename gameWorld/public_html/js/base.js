@@ -188,18 +188,18 @@ function MainGame(canvasId) {
             }
             else if(obj.pos.y >= (canvas.height+pad.y)){
                 obj.pos.y = canvas.height - pad.y
-                obj.flipVelocity(0, -1);
+                obj.flipVelocity(1, -1);
             }
 
             if(obj.pos.x <= pad.x){
                 obj.pos.x = pad.x;
                 // obj.recalculateVelocity();
-                obj.flipVelocity(-1, 0);
+                obj.flipVelocity(-1, 1);
             }
             else if(obj.pos.x >= (canvas.width - pad.w)){
                 obj.pos.x = canvas.width - pad.w;
                 // obj.recalculateVelocity();
-                obj.flipVelocity(-1, 0);
+                obj.flipVelocity(-1, 1);
             }
         }
 
