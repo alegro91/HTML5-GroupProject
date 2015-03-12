@@ -17,9 +17,12 @@
 
                 this.draw = function (context) {
                     var pos = this.getRealCoordinates(context);
-                    
-                    function 
-                    
+
+                    function getPadding()
+                    {
+                        return playerRadius + ;
+                    }
+
                     context.beginPath();
                     context.arc(pos.x + 3 + playerRadius, pos.y - playerRadius - 3, playerRadius, 0, 2 * Math.PI, false);
                     context.fillStyle = 'green';
