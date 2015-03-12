@@ -66,3 +66,54 @@ function InputEvents(){
 
 }
 
+
+
+
+function MainGame(canvasId){
+
+    var canvas = document.getElementById(canvasId);
+    var ctx = canvas.getContext("2d");
+
+    this.GRAVITY = -16;
+
+    var objects = [];
+
+    var prevTime = null;
+
+    this.addGameObject = function(obj){
+        objects.push(obj);
+    }
+
+    this.update = function(time){
+
+        var timeDelta = 0;
+        if(prevTime != null){
+            timeDelta = time-prevTime;
+
+        }
+        prevTime = time;
+
+        
+        // Update objects
+        for(var i=0; i < objects.length; i++){
+            objects[i].update(timeDelta/150);
+        }
+
+
+        // Here we will do cllision detection
+
+        _clearCanvas();
+
+        // Draw objects
+        for(var i=0; i < objects.length; i++){
+            objects[i].draw(ctx);
+        }
+    };
+
+
+
+    function _clearCanvas(){
+        ctx.clearRect ( 0 , 0 , canvas.width, canvas.height );
+    }
+}
+
