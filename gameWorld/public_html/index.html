@@ -17,7 +17,7 @@
                 var _this = this;
 
                 this.draw = function (context) {
-                    var pos = this.getRealCoordinates();
+                    var pos = this.getRealCoordinates(context);
                     context.beginPath();
                     context.arc(pos.x, pos.y, playerRadius, 0, 2 * Math.PI, false);
                     context.fillStyle = 'green';
@@ -36,22 +36,12 @@
         </script>
     </head>
 
-    <body  onkeydown="getArrows(event)">
+    <body>
         <canvas id="gameWorld" width="800" height="640"></canvas>
         <script>
-            var canvas = document.getElementById('gameWorld');
-            var context = canvas.getContext('2d');
-
-            function clearCanvas()
-            {
-                context.beginPath();
-                context.rect(0, 0, canvas.width, canvas.height);
-                context.fillStyle = 'white';
-                context.fill();
-                context.lineWidth = 3;
-                context.strokeStyle = 'black';
-                context.stroke();
-            }
+            var game = new MainGame("gameWorld");
+            game.addGameObject(new Player());
+            game.start();
         </script>
     </body>
 </html>

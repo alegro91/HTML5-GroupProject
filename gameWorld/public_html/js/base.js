@@ -8,46 +8,46 @@ function Position(x, y)
 }
 
 
-function GameObject(){
+function GameObject() {
 
     this.pos = new Position(0, 0);
 
 
-    this.draw = function(ctx){
+    this.draw = function (ctx) {
 
     };
 
-    this.update = function(timedelta){
+    this.update = function (timedelta) {
 
 
     };
 
-    this.getRealCoordinates = function(ctx){
+    this.getRealCoordinates = function (ctx) {
         return {x: this.pos.x, y: ctx.canvas.height - this.pos.y};
     };
 }
 
 
 
-function InputEvents(){
+function InputEvents() {
 
     var KEYCODE_MAP = {
-        39 : "moveright",
-        37 : "moveleft",
-        38 : "jump",
+        39: "moveright",
+        37: "moveleft",
+        38: "jump",
     };
 
     var _event_handlers = {};
 
-    this.on = function(event, handler){
+    this.on = function (event, handler) {
 
         _event_handlers[event] = handler;
 
     };
 
 
-    document.addEventListener("keydown", function(event){
-        
+    document.addEventListener("keydown", function (event) {
+
         var code = event.which;
         if (!KEYCODE_MAP.hasOwnProperty(code))
             return;
@@ -60,7 +60,7 @@ function InputEvents(){
         _event_handlers[ev]();
 
     });
-    
+
 
 
 
@@ -69,7 +69,7 @@ function InputEvents(){
 
 
 
-function MainGame(canvasId){
+function MainGame(canvasId) {
 
 
     this.GRAVITY = -16;
@@ -80,23 +80,23 @@ function MainGame(canvasId){
     var _this = this;
     var prevTime = null;
 
-    this.addGameObject = function(obj){
+    this.addGameObject = function (obj) {
         objects.push(obj);
     }
 
-    this.update = function(time){
+    this.update = function (time) {
 
         var timeDelta = 0;
-        if(prevTime != null){
-            timeDelta = time-prevTime;
+        if (prevTime != null) {
+            timeDelta = time - prevTime;
 
         }
         prevTime = time;
 
-        
+
         // Update objects
-        for(var i=0; i < objects.length; i++){
-            objects[i].update(timeDelta/150);
+        for (var i = 0; i < objects.length; i++) {
+            objects[i].update(timeDelta / 150);
         }
 
 
@@ -105,15 +105,15 @@ function MainGame(canvasId){
         _clearCanvas();
 
         // Draw objects
-        for(var i=0; i < objects.length; i++){
+        for (var i = 0; i < objects.length; i++) {
             objects[i].draw(ctx);
         }
     };
 
 
-    this.start = function(){
+    this.start = function () {
 
-        function loop(time){
+        function loop(time) {
             _this.update(time);
             window.requestAnimationFrame(loop);
         }
@@ -121,8 +121,9 @@ function MainGame(canvasId){
 
     };
 
-    function _clearCanvas(){
-        ctx.clearRect ( 0 , 0 , canvas.width, canvas.height );
+    function _clearCanvas() {
+        ctx.fillStyle = 'green';
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 }
 
