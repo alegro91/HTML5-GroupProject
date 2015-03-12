@@ -5,7 +5,6 @@
         <meta charset="UTF-8">
         <script type="text/javascript" src="js/base.js"></script>
         <script type="text/javascript">
-
             Player.prototype = Object.create(GameObject);
 
             function Player() {
@@ -28,16 +27,26 @@
                 };
 
                 var playerInput = new InputEvents();
+
                 playerInput.on("moveleft", function ()
                 {
-                    _this.pos.x = _this.pos.x - _this.playerStep;
+                    _this.pos.x = _this.pos.x - playerStep;
+                })
+
+                playerInput.on("moveright", function ()
+                {
+                    _this.pos.x = _this.pos.x + playerStep;
+                })
+
+                playerInput.on("jump", function ()
+                {
+                    _this.pos.y = ;
                 })
             }
         </script>
     </head>
-
     <body>
-        <canvas id="gameWorld" width="800" height="640"></canvas>
+        <canvas style="border: 1px solid black" id="gameWorld" width="900" height="500"></canvas>
         <script>
             var game = new MainGame("gameWorld");
             game.addGameObject(new Player());
