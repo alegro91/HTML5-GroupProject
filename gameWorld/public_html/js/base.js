@@ -1,5 +1,7 @@
 
 
+var GRAVITY = 16;
+
 function Position(x, y)
 {
     this.x = x;
@@ -7,17 +9,46 @@ function Position(x, y)
 
 }
 
+function Velocity(x, y)
+{
+    this.x = x;
+    this.y = y;
+}
+
+function Acceleration(x, y)
+{
+    this.x = x;
+    this.y = y;
+}
+
 
 function GameObject() {
 
     this.pos = new Position(0, 0);
 
+    var _vel = new Velocity(0, 0);
+    var _acc = new Acceleration(0, -GRAVITY);
 
     this.draw = function (ctx) {
+
 
     };
 
     this.update = function (timedelta) {
+
+        _acc.x = 0;
+
+        if(this.pos.y == 0){
+            if(Math.abs(_vel.x) > 1)
+                _acc.x = -Math.sign(_vel.x)*15;
+            else
+                _vel.x = 0;
+        }
+
+        _vel.x += _acc.x*timedelta;
+        _vel.y += _acc.y*timedelta;
+        this.pos.y += _vel.y*timedelta + 0.5*_acc.y*timedelta*timedelta;
+        this.pos.x += _vel.x*timedelta + 0.5*_acc.x*timedelta*timedelta;
 
 
     };
@@ -25,6 +56,20 @@ function GameObject() {
     this.getRealCoordinates = function (ctx) {
         return {x: this.pos.x, y: ctx.canvas.height - this.pos.y};
     };
+
+
+    this.setVelocity = function(x, y){
+        if(x != null)
+            _vel.x = x;
+        if(y != null)
+            _vel.y = y;
+    }
+
+    this.flipVelocity = function(x, y){
+        _vel.x *= x;
+        _vel.y *= y;
+    }
+
 }
 
 
@@ -72,8 +117,6 @@ function InputEvents() {
 function MainGame(canvasId) {
 
 
-    this.GRAVITY = -16;
-
     var canvas = document.getElementById(canvasId);
     var ctx = canvas.getContext("2d");
     var objects = [];
@@ -99,8 +142,7 @@ function MainGame(canvasId) {
             objects[i].update(timeDelta / 150);
         }
 
-
-        // Here we will do cllision detection
+        _detectWallHits();
 
         _clearCanvas();
 
@@ -122,8 +164,40 @@ function MainGame(canvasId) {
     };
 
     function _clearCanvas() {
-        ctx.fillStyle = 'green';
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+
+    function _detectWallHits(){
+
+        for(var i=0; i < objects.length; i++){
+
+            var obj = objects[i];
+
+            if(obj.pos.y <= 0){
+                obj.pos.y = 0;
+                obj.setVelocity(null, 0);
+            }
+            else if(obj.pos.y >= canvas.height){
+                obj.pos.y = canvas.height;
+                obj.flipVelocity(0, -1);
+                // obj.vel = -obj.vel;
+            }
+
+            if(obj.pos.x <= 0){
+                obj.pos.x = 0;
+                // obj.recalculateVelocity();
+                obj.flipVelocity(-1, 0);
+                // obj.vel = -obj.vel;
+            }
+            else if(obj.pos.x >= canvas.width){
+                obj.pos.x = canvas.width;
+                // obj.recalculateVelocity();
+                obj.flipVelocity(-1, 0);
+                // obj.vel = -obj.vel;
+            }
+        }
+
     }
 }
 
