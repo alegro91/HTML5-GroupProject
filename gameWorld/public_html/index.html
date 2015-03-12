@@ -17,8 +17,11 @@
 
                 this.draw = function (context) {
                     var pos = this.getRealCoordinates(context);
+                    
+                    function 
+                    
                     context.beginPath();
-                    context.arc(pos.x, pos.y, playerRadius, 0, 2 * Math.PI, false);
+                    context.arc(pos.x + 3 + playerRadius, pos.y - playerRadius - 3, playerRadius, 0, 2 * Math.PI, false);
                     context.fillStyle = 'green';
                     context.fill();
                     context.lineWidth = 3;
@@ -28,19 +31,21 @@
 
                 var playerInput = new InputEvents();
 
-                playerInput.on("moveleft", function ()
-                {
-                    _this.pos.x = _this.pos.x - playerStep;
-                })
-
                 playerInput.on("moveright", function ()
                 {
-                    _this.pos.x = _this.pos.x + playerStep;
+                    _this.setVelocity(30, null);
                 })
-
+                playerInput.on("moveleft", function ()
+                {
+                    _this.setVelocity(-30, null);
+                })
                 playerInput.on("jump", function ()
                 {
-                    _this.pos.y = ;
+                    if (_this.pos.y == 0)
+                    {
+                        _this.setVelocity(null, 50);
+                    }
+
                 })
             }
         </script>
