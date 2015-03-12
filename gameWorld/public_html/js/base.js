@@ -29,6 +29,12 @@ function GameObject() {
     var _vel = new Velocity(0, 0);
     var _acc = new Acceleration(0, -GRAVITY);
 
+    this.getPadding = function(){
+
+        return {x: 0, y:0, w:0, h:0};
+
+    }
+
     this.draw = function (ctx) {
 
 
@@ -37,8 +43,9 @@ function GameObject() {
     this.update = function (timedelta) {
 
         _acc.x = 0;
+        var pad = this.getPadding();
 
-        if(this.pos.y == 0){
+        if(this.pos.y == pad.y){
             if(Math.abs(_vel.x) > 1)
                 _acc.x = -Math.sign(_vel.x)*15;
             else
@@ -173,28 +180,26 @@ function MainGame(canvasId) {
         for(var i=0; i < objects.length; i++){
 
             var obj = objects[i];
+            var pad = obj.getPadding();
 
-            if(obj.pos.y <= 0){
-                obj.pos.y = 0;
+            if(obj.pos.y <= pad.y){
+                obj.pos.y = pad.y;
                 obj.setVelocity(null, 0);
             }
-            else if(obj.pos.y >= canvas.height){
-                obj.pos.y = canvas.height;
+            else if(obj.pos.y >= (canvas.height+pad.y)){
+                obj.pos.y = canvas.height - pad.y
                 obj.flipVelocity(0, -1);
-                // obj.vel = -obj.vel;
             }
 
-            if(obj.pos.x <= 0){
-                obj.pos.x = 0;
+            if(obj.pos.x <= pad.x){
+                obj.pos.x = pad.x;
                 // obj.recalculateVelocity();
                 obj.flipVelocity(-1, 0);
-                // obj.vel = -obj.vel;
             }
-            else if(obj.pos.x >= canvas.width){
-                obj.pos.x = canvas.width;
+            else if(obj.pos.x >= (canvas.width - pad.w)){
+                obj.pos.x = canvas.width - pad.w;
                 // obj.recalculateVelocity();
                 obj.flipVelocity(-1, 0);
-                // obj.vel = -obj.vel;
             }
         }
 
