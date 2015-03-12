@@ -1,7 +1,7 @@
 To accept a task put your initials at the end of the task you want.
 Example: 29. Do something to the project. - TMH
 
-1. Remove old content from the html files from tmholen.com that isn't relevant to our new site.
+1. Remove old content from the html files from tmholen.com that isn't relevant to our new site. - TMH
 2. Add new content to pages.
 3. Create a small JavaScript applications for the "JavaScript Fun" page
 4. Create a simple player figure for the game.
