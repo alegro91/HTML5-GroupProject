@@ -71,13 +71,13 @@ function InputEvents(){
 
 function MainGame(canvasId){
 
-    var canvas = document.getElementById(canvasId);
-    var ctx = canvas.getContext("2d");
 
     this.GRAVITY = -16;
 
+    var canvas = document.getElementById(canvasId);
+    var ctx = canvas.getContext("2d");
     var objects = [];
-
+    var _this = this;
     var prevTime = null;
 
     this.addGameObject = function(obj){
@@ -111,6 +111,15 @@ function MainGame(canvasId){
     };
 
 
+    this.start = function(){
+
+        function loop(time){
+            _this.update(time);
+            window.requestAnimationFrame(loop);
+        }
+        window.requestAnimationFrame(loop);
+
+    };
 
     function _clearCanvas(){
         ctx.clearRect ( 0 , 0 , canvas.width, canvas.height );
