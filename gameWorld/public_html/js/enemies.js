@@ -19,6 +19,7 @@ function Enemy(x, vx){
     this.padding.top = 0;
 
     var _lastJump = 0;
+    var _jumpFrequency = Math.floor((Math.random() * 10) + 10)
     var _nextJump = _calculateNextJump();
 
     this.draw = function(ctx) {
@@ -32,7 +33,7 @@ function Enemy(x, vx){
         _lastJump += timedelta;
 
         if(_lastJump > _nextJump){
-            this.setVelocity(null, 50);
+            this.setVelocity(null, Math.floor(Math.random() * 40 + 30));
             _lastJump = 0;
             _nextJump = _calculateNextJump();
         }
@@ -44,18 +45,18 @@ function Enemy(x, vx){
 
     this.onWallHit = function(direction, canvas){
 
-        switch(direction){
-            case DIRECTION.LEFT:
-            case DIRECTION.RIGHT:
-                this.destroy();
-                return;
-        }
+        // switch(direction){
+        //     case DIRECTION.LEFT:
+        //     case DIRECTION.RIGHT:
+        //         this.destroy();
+        //         return;
+        // }
         GameObject.prototype.onWallHit.call(this, direction, canvas);
 
     };
 
     function _calculateNextJump(){
-        return Math.floor((Math.random() * 10) + 1);
+        return Math.floor((Math.random() * _jumpFrequency) + 1);
     }
 
 }
