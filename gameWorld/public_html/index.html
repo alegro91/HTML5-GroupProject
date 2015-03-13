@@ -4,8 +4,9 @@
         <title></title>
         <meta charset="UTF-8">
         <script type="text/javascript" src="js/base.js"></script>
+        <script type="text/javascript" src="js/enemies.js"></script>
         <script type="text/javascript">
-            Player.prototype = Object.create(GameObject);
+            Player.prototype = Object.create(GameObject.prototype);
 
             function Player() {
                 GameObject.call(this);
@@ -16,11 +17,14 @@
                 var playerRunSpeed = 40;
                 var playerJumpHeight = 50; 
 
-                this.getPadding = function(){
-                    return {x:playerRadius+3, y:playerRadius+3,
-                            w:playerRadius+3, h:playerRadius+3};
+                var _moving = false;
+                var _groundDecel = 20;
 
-                }
+                this.padding.left = playerRadius+3;
+                this.padding.right = playerRadius+3;
+                this.padding.bottom = playerRadius+3;
+                this.padding.top = playerRadius+3;
+
                 this.draw = function (context) {
                     var pos = this.getRealCoordinates(context);
                     context.beginPath();
@@ -32,25 +36,38 @@
                     context.stroke();
                 };
 
+
+                this.update = function(timedelta){
+
+                    // Smoothly slow down the object when it is on the ground
+                    if(!_moving && this.pos.y == this.padding.bottom){
+                        var diff = _groundDecel*timedelta
+                        if(diff < Math.abs(this.vel.x))
+                            this.vel.x += -Math.sign(this.vel.x)*diff;
+                        else
+                            this.vel.x = 0;
+                    }
+
+                    GameObject.prototype.update.call(this, timedelta);
+                }
+
                 var playerInput = new InputEvents();
 
-                playerInput.on("moveright", function ()
+                playerInput.on("moveright", function (released)
                 {
                     _this.setVelocity(playerRunSpeed, null);
+                    _moving = !released;
                 })
-                playerInput.on("moveleft", function ()
+                playerInput.on("moveleft", function (released)
                 {
                     _this.setVelocity(-playerRunSpeed, null);
+                    _moving = !released;
                 })
                 playerInput.on("jump", function ()
                 {
-                    if (_this.pos.y == 13)
+                    if (_this.pos.y == _this.padding.bottom)
                     {
-<<<<<<< HEAD
                         _this.setVelocity(null, playerJumpHeight);
-=======
-                        _this.setVelocity(null, 100);
->>>>>>> 0626600ef1f820f6bf44ae9de20c366a97d4b6a4
                     }
 
                 })
@@ -62,6 +79,9 @@
         <script>
             var game = new MainGame("gameWorld");
             game.addGameObject(new Player());
+            game.addGameObject(new Enemy(10, 10));
+            game.addGameObject(new Enemy(100, 10));
+            game.addGameObject(new Enemy(800, -10));
             game.start();
         </script>
     </body>

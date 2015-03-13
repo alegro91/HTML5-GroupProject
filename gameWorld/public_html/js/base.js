@@ -1,64 +1,46 @@
 
 
 var GRAVITY = 16;
+var TIME_SCALING = 150;
 
-function Position(x, y)
-{
+var DIRECTION = {
+    TOP : 1,
+    BOTTOM : 2,
+    LEFT : 3,
+    RIGHT : 4
+};
+
+
+function Vector(x, y){
     this.x = x;
     this.y = y;
 
 }
 
-function Velocity(x, y)
-{
-    this.x = x;
-    this.y = y;
+function Padding(top, right, bottom, left){
+    this.top = top;
+    this.right = right;
+    this.bottom = bottom;
+    this.left = left;
 }
-
-function Acceleration(x, y)
-{
-    this.x = x;
-    this.y = y;
-}
-
 
 function GameObject() {
 
-    this.pos = new Position(0, 0);
+    var _this = this;
 
-    var _vel = new Velocity(0, 0);
-    var _acc = new Acceleration(0, -GRAVITY);
+    this.pos = new Vector(0, 0);
+    this.vel = new Vector(0, 0);
+    this.acc = new Vector(0, -GRAVITY);
 
-    this.getPadding = function(){
-
-        return {x: 0, y:0, w:0, h:0};
-
-    }
-
-    this.draw = function (ctx) {
+    // Set to true when the object shoud be removed from the game
+    this.deleted = false;
 
 
-    };
+    // The padding for the object. This is the
+    // distance that the object is covering 
+    // in each direction from its // (x,y)-position
+    this.padding = new Padding(0, 0, 0, 0);
 
-    this.update = function (timedelta) {
-
-        _acc.x = 0;
-        var pad = this.getPadding();
-
-        if(this.pos.y == pad.y){
-            if(Math.abs(_vel.x) > 1)
-                _acc.x = -Math.sign(_vel.x)*15;
-            else
-                _vel.x = 0;
-        }
-
-        _vel.x += _acc.x*timedelta;
-        _vel.y += _acc.y*timedelta;
-        this.pos.y += _vel.y*timedelta + 0.5*_acc.y*timedelta*timedelta;
-        this.pos.x += _vel.x*timedelta + 0.5*_acc.x*timedelta*timedelta;
-
-
-    };
 
     this.getRealCoordinates = function (ctx) {
         return {x: this.pos.x, y: ctx.canvas.height - this.pos.y};
@@ -67,18 +49,57 @@ function GameObject() {
 
     this.setVelocity = function(x, y){
         if(x != null)
-            _vel.x = x;
+            this.vel.x = x;
         if(y != null)
-            _vel.y = y;
+            this.vel.y = y;
+    }
+    
+    this.flipVelocity = function(x, y){
+        this.vel.x *= x;
+        this.vel.y *= y;
     }
 
-    this.flipVelocity = function(x, y){
-        _vel.x *= x;
-        _vel.y *= y;
+    this.destroy = function(){
+        this.deleted = true;
     }
 
 }
 
+
+// This is called once every frame.
+// All drawing should happen in this function.
+GameObject.prototype.draw = function(ctx) {
+};
+
+// This is called every time the object should
+// update its position.
+GameObject.prototype.update = function(timedelta) {
+    this.vel.y += this.acc.y*timedelta;
+    this.pos.y += this.vel.y*timedelta + 0.5*this.acc.y*timedelta*timedelta;
+    this.pos.x += this.vel.x*timedelta + 0.5*this.acc.x*timedelta*timedelta;
+};
+
+GameObject.prototype.onWallHit = function(direction, canvas){
+    switch(direction){
+        case DIRECTION.BOTTOM:
+            this.pos.y = this.padding.bottom;
+            this.setVelocity(null, 0);
+            break;
+        case DIRECTION.TOP:
+            this.pos.y = canvas.height - this.padding.top
+            this.flipVelocity(1, -1);
+            break;
+        case DIRECTION.LEFT:
+            this.pos.x = this.padding.left;
+            this.flipVelocity(-1, 1);
+            break;
+        case DIRECTION.RIGHT:
+            this.pos.x = canvas.width - this.padding.right;
+            this.flipVelocity(-1, 1);
+            break;
+
+    }
+};
 
 
 function InputEvents() {
@@ -99,20 +120,32 @@ function InputEvents() {
 
 
     document.addEventListener("keydown", function (event) {
+        var handler = _getHandler(event);
+        if(handler != null)
+            handler(false);
+
+    });
+
+    document.addEventListener("keyup", function (event) {
+        var handler = _getHandler(event);
+        if(handler != null)
+            handler(true);
+    });
+
+    function _getHandler(event){
 
         var code = event.which;
         if (!KEYCODE_MAP.hasOwnProperty(code))
-            return;
+            return null;
 
         var ev = KEYCODE_MAP[code];
 
         if (!_event_handlers.hasOwnProperty(ev))
-            return;
+            return null;
 
-        _event_handlers[ev]();
+        return _event_handlers[ev];
 
-    });
-
+    }
 
 
 
@@ -126,6 +159,7 @@ function MainGame(canvasId) {
 
     var canvas = document.getElementById(canvasId);
     var ctx = canvas.getContext("2d");
+    
     var objects = [];
     var _this = this;
     var prevTime = null;
@@ -144,9 +178,18 @@ function MainGame(canvasId) {
         prevTime = time;
 
 
+        var removed = [];
         // Update objects
         for (var i = 0; i < objects.length; i++) {
-            objects[i].update(timeDelta / 150);
+            if(objects[i].deleted)
+                removed.push(i);
+            else
+                objects[i].update(timeDelta / TIME_SCALING);
+        }
+
+        // Remove deleted objects
+        for (var i = 0; i < removed.length; i++) {
+            objects.splice(removed[i], 1);
         }
 
         _detectWallHits();
@@ -166,7 +209,18 @@ function MainGame(canvasId) {
             _this.update(time);
             window.requestAnimationFrame(loop);
         }
-        window.requestAnimationFrame(loop);
+
+        function loadResources(){
+            if(RESOURCES.allResourcesReady())
+                window.requestAnimationFrame(loop);
+            else
+                window.requestAnimationFrame(loadResources);
+
+            _drawLoading();
+        }
+
+        window.requestAnimationFrame(loadResources);
+
 
     };
 
@@ -174,35 +228,71 @@ function MainGame(canvasId) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
+    function _drawLoading() {
+        _clearCanvas();
+
+        ctx.fillText("Loading resources", canvas.width/2-20, canvas.height/2);
+
+    }
 
     function _detectWallHits(){
 
         for(var i=0; i < objects.length; i++){
 
             var obj = objects[i];
-            var pad = obj.getPadding();
+            var pad = obj.padding;
 
-            if(obj.pos.y <= pad.y){
-                obj.pos.y = pad.y;
-                obj.setVelocity(null, 0);
+            // Check y-direction
+            if(obj.pos.y <= pad.bottom){
+                obj.onWallHit(DIRECTION.BOTTOM, canvas);
             }
-            else if(obj.pos.y >= (canvas.height+pad.y)){
-                obj.pos.y = canvas.height - pad.y
-                obj.flipVelocity(1, -1);
+            else if(obj.pos.y >= (canvas.height+pad.top)){
+                obj.onWallHit(DIRECTION.TOP, canvas);
             }
 
-            if(obj.pos.x <= pad.x){
-                obj.pos.x = pad.x;
-                // obj.recalculateVelocity();
-                obj.flipVelocity(-1, 1);
+
+            // Check x-direction 
+            if(obj.pos.x <= pad.left){
+                obj.onWallHit(DIRECTION.LEFT, canvas);
             }
-            else if(obj.pos.x >= (canvas.width - pad.w)){
-                obj.pos.x = canvas.width - pad.w;
-                // obj.recalculateVelocity();
-                obj.flipVelocity(-1, 1);
+            else if(obj.pos.x >= (canvas.width - pad.right)){
+                obj.onWallHit(DIRECTION.RIGHT, canvas);
             }
         }
 
     }
 }
+
+
+
+
+var RESOURCES = new (function(){
+
+    var _images = {};
+
+    this.addImage = function(name, path){
+        _images[name] = new Image();
+        _images[name].src = path;
+    }
+
+    this.getImage = function(name){
+        return _images[name];
+    }
+    
+    this.allResourcesReady = function(){
+
+        for(i in _images){
+            if(!_images[i].complete)
+                return false;
+        }
+
+        return true;
+
+    }
+
+
+
+
+})();
+
 
