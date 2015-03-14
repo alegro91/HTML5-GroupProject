@@ -10,7 +10,7 @@ function Enemy2(x, vx) {
     this.vel.x = vx;
 
     this.padding.left = 0;
-    this.padding.right = 50;
+    this.padding.right = 80;
     this.padding.bottom = 80;
     this.padding.top = 0;
 
