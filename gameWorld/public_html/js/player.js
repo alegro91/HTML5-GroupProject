@@ -1,3 +1,5 @@
+RESOURCES.addImage("player", "img/player.png");
+
 Player.prototype = Object.create(GameObject.prototype);
 
 function Player() {
@@ -14,18 +16,12 @@ function Player() {
 
     this.padding.left = playerRadius + 3;
     this.padding.right = playerRadius + 3;
-    this.padding.bottom = playerRadius + 3;
+    this.padding.bottom = playerRadius + 60;
     this.padding.top = playerRadius + 3;
 
     this.draw = function (context) {
         var pos = this.getRealCoordinates(context);
-        context.beginPath();
-        context.arc(pos.x, pos.y, playerRadius, 0, 2 * Math.PI, false);
-        context.fillStyle = 'green';
-        context.fill();
-        context.lineWidth = 3;
-        context.strokeStyle = '#003300';
-        context.stroke();
+        context.drawImage(RESOURCES.getImage("player"), pos.x, pos.y, 30, 70);
     };
 
 

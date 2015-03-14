@@ -1,8 +1,8 @@
-RESOURCES.addImage("enemy1", "img/enemy1.png");
+RESOURCES.addImage("enemy2", "img/enemy2.png");
 
 Enemy.prototype = Object.create(GameObject.prototype);
 
-function Enemy(x, vx) {
+function Enemy2(x, vx) {
     GameObject.call(this);
 
     this.pos.x = x;
@@ -11,7 +11,7 @@ function Enemy(x, vx) {
 
     this.padding.left = 0;
     this.padding.right = 50;
-    this.padding.bottom = 50;
+    this.padding.bottom = 80;
     this.padding.top = 0;
 
     var _lastJump = 0;
@@ -20,7 +20,7 @@ function Enemy(x, vx) {
 
     this.draw = function (ctx) {
         var pos = this.getRealCoordinates(ctx);
-        ctx.drawImage(RESOURCES.getImage("enemy1"), pos.x, pos.y, 50, 50);
+        ctx.drawImage(RESOURCES.getImage("enemy2"), pos.x, pos.y, 80, 80);
     };
 
 
