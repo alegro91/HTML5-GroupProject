@@ -1,0 +1,54 @@
+--------------------------------------------------------------
+This document should be discussed next time the group meets.
+--------------------------------------------------------------
+
+GAME SPECIFICATION
+
+Attack
+-Player kills enemy by one or more hit attacks.
+-Attack has a 0.3s cooldown
+-Button-z attacks to the left and button-x attacks to the right
+-Attack graphic is a energy-like punch
+
+Enemy touches player
+-If enemy touches player, player is stunned for x-seconds depending upon which enemy touched.
+-If player is stunned 5 times stun lasts 5s once
+
+Lose condition
+-Enemies attempts to reach player's house, if touched house loses 1-2 hp. Player house has 30 hp.
+-Player stunned 20 times
+
+-------------------------------------------------------------------------------------------
+MAIN
+The players goal is to defend the house in the middle of the screen against oncoming monsters.
+Enemies spawn at either far left, or far right side of the screen.
+Each time collision between monster and house is detected, the house loses hitpoints.
+Failstate is when house reaches 0 hitpoints.
+Enemies can not kill the player directly, but he gets stunned if touching them.
+Spawn rate of enemies goes up as time progresses.
+When house inevitably is destroyed, score is calculated based on enemy kills.
+
+HOUSE
+Located in the middle of the screen.
+Does not move.
+20 hitpoints.
+
+PLAYER
+Can not die.
+If collision with enemy, player is stunned for 2 seconds. After stun ends, player can not be stunned for 1 sec.
+Can melee attack to the right, and to the left.
+Attack does 1 damage.
+Can only attack each 700ms.
+
+ENEMY: BAT
+Small and fast.
+Jumps frequently.
+Has 1 hitpoint.
+Does 1 point of damage to house each pass.
+Worth 1 point.
+
+ENEMY: SPIDER
+Large and slow.
+Has 3 hitpoints.
+Does 4 points of damage to house each pass.
+Worth 4 points.
