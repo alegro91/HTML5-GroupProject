@@ -6,7 +6,7 @@ function Player() {
     GameObject.call(this);
     this.pos.x = 100;
     this.pos.y = 30;
-    var playerRadius = 10;
+
     var _this = this;
     var playerRunSpeed = 40;
     var playerJumpHeight = 50;
@@ -14,10 +14,10 @@ function Player() {
     var _moving = false;
     var _groundDecel = 20;
 
-    this.padding.left = playerRadius + 3;
-    this.padding.right = playerRadius + 3;
-    this.padding.bottom = playerRadius + 60;
-    this.padding.top = playerRadius + 3;
+    this.padding.left = 0;
+    this.padding.right = 30;
+    this.padding.bottom = 70;
+    this.padding.top = 0;
 
     this.draw = function (context) {
         var pos = this.getRealCoordinates(context);
