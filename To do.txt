@@ -7,10 +7,13 @@ Example: 29. Do something to the project. - TMH
 4. Create a simple player figure for the game. - TMH
 5. Create a enemy figure for the game. - TMH
 6. Create another enemy figure for the game. - TMH
-7. Create a punching sound effect for the game.
-8. Create a enemy sound effect.
+7. Create a punching sound effect for the game. - <TMH
+8. Create a spider enemy sound effect.
 9. Create another JavaScript applications for the "JavaScript Fun" page. (Example: Get todays date)
 10. Create another JavaScript applications for the "JavaScript Fun" page. (Example: Random fact)
 11. Create a background - TMH
 12. Create attack graphic - TMH
 13. Create player's house - TMH
+14. Create Bat ememy sound effect - TMH
+15. Find portrait image of yourself (to the about page) - All
+16. Document some of the work we do by taking some photos (for the creation page)
