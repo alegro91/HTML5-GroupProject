@@ -1,6 +1,6 @@
 RESOURCES.addImage("enemy1", "img/enemy1.png");
 
-Enemy.prototype = Object.create(GameObject.prototype);
+Enemy1.prototype = Object.create(GameObject.prototype);
 
 function Enemy1(x, vx) {
     GameObject.call(this);
