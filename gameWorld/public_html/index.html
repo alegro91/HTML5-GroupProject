@@ -15,12 +15,12 @@
         <canvas  id="gameWorld" width="900" height="500"></canvas>
         <script>
             var game = new MainGame("gameWorld");
+            game.addGameObject(new Castle());
             var rightAttack = new RightAttack();
             var leftAttack = new LeftAttack();
             game.addGameObject(rightAttack);
             game.addGameObject(leftAttack);
             game.addGameObject(new Player(leftAttack, rightAttack));
-            game.addGameObject(new Castle());
             game.addGameObject(new Enemy1(10, 7));
             game.addGameObject(new Enemy1(100, -7));
             game.addGameObject(new Enemy2(900, -4));
