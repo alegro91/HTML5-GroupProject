@@ -8,9 +8,11 @@
         <script type="text/javascript" src="js/player.js"></script>
         <script type="text/javascript" src="js/enemy1.js"></script>
         <script type="text/javascript" src="js/enemy2.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="canvasStyle.css">
     </head>
     <body>
-        <canvas style="border: 1px solid black" id="gameWorld" width="900" height="500"></canvas>
+        <canvas  id="gameWorld" width="900" height="500"></canvas>
         <script>
             var game = new MainGame("gameWorld");
             game.addGameObject(new Player());
