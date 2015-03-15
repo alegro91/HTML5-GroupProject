@@ -188,6 +188,8 @@ function MainGame(canvasId) {
 
         // Draw objects
         for (var i = 0; i < objects.length; i++) {
+            if(objects[i].hidden)
+                continue;
             objects[i].draw(ctx);
         }
     };

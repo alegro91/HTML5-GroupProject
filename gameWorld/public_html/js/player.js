@@ -2,7 +2,7 @@ RESOURCES.addImage("player", "img/player.png");
 
 Player.prototype = Object.create(GameObject.prototype);
 
-function Player() {
+function Player(leftAttack, rightAttack) {
     GameObject.call(this);
     this.pos.x = 350;
     this.pos.y = 30;
@@ -38,6 +38,12 @@ function Player() {
         }
 
         GameObject.prototype.update.call(this, timedelta);
+
+        // Position the attacks next to the player
+        rightAttack.pos.x = this.pos.x + this.padding.right + 5;
+        rightAttack.pos.y = this.pos.y - 10;
+        leftAttack.pos.x = this.pos.x - this.padding.left - leftAttack.padding.right - 10;
+        leftAttack.pos.y = this.pos.y - 10;
     };
 
     var playerInput = new InputEvents();
@@ -64,11 +70,85 @@ function Player() {
 
     playerInput.on("leftAttack", function (released)
     {
-
+        if(!released)
+            leftAttack.execute();
     });
 
     playerInput.on("rightAttack", function (released)
     {
-
+        if(!released)
+            rightAttack.execute();
     });
 }
+
+
+
+
+RESOURCES.addImage("attack-left", "img/leftAttack.png");
+RESOURCES.addImage("attack-right", "img/rightAttack.png");
+
+RightAttack.prototype = Object.create(GameObject.prototype);
+
+function RightAttack(imageName){
+    GameObject.call(this);
+
+    this.padding.left = 0;
+    this.padding.right = 22;
+    this.padding.bottom = 40;
+    this.padding.top = 0;
+
+    this.hidden = true;
+
+    // The number of frames the attack currently has been visible
+    this._visibleFrameCount = 0;
+
+    this.update = function(){
+        if(this.hidden)
+            return;
+
+        this._visibleFrameCount++;
+
+        if(this._visibleFrameCount > 20)
+            this.hidden = true;
+
+        // The attack should not be affected by gravity so
+        // we don't call the parent's update method.
+    }
+
+    this.draw = function (ctx) {
+        var pos = this.getRealCoordinates(ctx);
+        ctx.save();
+        // Rotate the image around the middle left edge
+        ctx.translate(pos.x, pos.y + 20);
+        ctx.rotate((this._visibleFrameCount*6)*Math.PI/180 - Math.PI/2);
+        ctx.drawImage(RESOURCES.getImage("attack-right"), 0, -20, 22, 40);
+        ctx.restore();
+    };
+
+    this.execute = function(){
+        this.hidden = false;
+        this._visibleFrameCount = 0;
+    }
+
+    this.onWallHit = function(direction){
+        // do nothing
+    }
+}
+
+LeftAttack.prototype = Object.create(RightAttack.prototype);
+
+function LeftAttack(imageName){
+    RightAttack.call(this);
+
+    this.draw = function (ctx) {
+        var pos = this.getRealCoordinates(ctx);
+        ctx.save();
+        // Rotate the image around the middle right edge
+        ctx.translate(pos.x + 22,  pos.y + 20);
+        ctx.rotate(-(this._visibleFrameCount*6)*Math.PI/180 + Math.PI/2);
+        ctx.drawImage(RESOURCES.getImage("attack-left"), -22, -20, 22, 40);
+        ctx.restore();
+    };
+
+}
+
