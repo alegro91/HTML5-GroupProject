@@ -4,7 +4,7 @@
         <title></title>
         <meta charset="UTF-8">
         <script type="text/javascript" src="js/base.js"></script>
-        <script type="text/javascript" src="js/house.js"></script>
+        <script type="text/javascript" src="js/castle.js"></script>
         <script type="text/javascript" src="js/player.js"></script>
         <script type="text/javascript" src="js/enemy1.js"></script>
         <script type="text/javascript" src="js/enemy2.js"></script>
@@ -14,11 +14,10 @@
         <script>
             var game = new MainGame("gameWorld");
             game.addGameObject(new Player());
-            game.addGameObject(new House());
-            game.addGameObject(new Enemy1(10, 10));
-            game.addGameObject(new Enemy1(100, 10));
-            game.addGameObject(new Enemy1(800, -10));
-            game.addGameObject(new Enemy2(600, -10));
+            game.addGameObject(new Castle());
+            game.addGameObject(new Enemy1(10, 7));
+            game.addGameObject(new Enemy1(100, -7));
+            game.addGameObject(new Enemy2(900, -4));
             game.start();
         </script>
     </body>

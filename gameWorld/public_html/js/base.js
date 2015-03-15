@@ -52,17 +52,16 @@ function GameObject() {
             this.vel.x = x;
         if (y != null)
             this.vel.y = y;
-    }
+    };
 
     this.flipVelocity = function (x, y) {
         this.vel.x *= x;
         this.vel.y *= y;
-    }
+    };
 
     this.destroy = function () {
         this.deleted = true;
-    }
-
+    };
 }
 
 
@@ -86,7 +85,7 @@ GameObject.prototype.onWallHit = function (direction, canvas) {
             this.setVelocity(null, 0);
             break;
         case DIRECTION.TOP:
-            this.pos.y = canvas.height - this.padding.top
+            this.pos.y = canvas.height - this.padding.top;
             this.flipVelocity(1, -1);
             break;
         case DIRECTION.LEFT:
@@ -108,14 +107,14 @@ function InputEvents() {
         39: "moveright",
         37: "moveleft",
         38: "jump",
+        97: "leftAttack",
+        100: "rightAttack",
     };
 
     var _event_handlers = {};
 
     this.on = function (event, handler) {
-
         _event_handlers[event] = handler;
-
     };
 
 
@@ -123,7 +122,6 @@ function InputEvents() {
         var handler = _getHandler(event);
         if (handler != null)
             handler(false);
-
     });
 
     document.addEventListener("keyup", function (event) {
@@ -144,18 +142,11 @@ function InputEvents() {
             return null;
 
         return _event_handlers[ev];
-
     }
-
-
-
 }
 
 
-
-
 function MainGame(canvasId) {
-
 
     var canvas = document.getElementById(canvasId);
     var ctx = canvas.getContext("2d");
@@ -173,10 +164,9 @@ function MainGame(canvasId) {
         var timeDelta = 0;
         if (prevTime != null) {
             timeDelta = time - prevTime;
-
         }
-        prevTime = time;
 
+        prevTime = time;
 
         var removed = [];
         // Update objects
@@ -220,19 +210,18 @@ function MainGame(canvasId) {
         }
 
         window.requestAnimationFrame(loadResources);
-
-
     };
+
 
     function _clearCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
+
     function _drawLoading() {
         _clearCanvas();
 
         ctx.fillText("Loading resources", canvas.width / 2 - 20, canvas.height / 2);
-
     }
 
     function _detectWallHits() {
@@ -259,11 +248,8 @@ function MainGame(canvasId) {
                 obj.onWallHit(DIRECTION.RIGHT, canvas);
             }
         }
-
     }
 }
-
-
 
 
 var RESOURCES = new (function () {
@@ -273,11 +259,11 @@ var RESOURCES = new (function () {
     this.addImage = function (name, path) {
         _images[name] = new Image();
         _images[name].src = path;
-    }
+    };
 
     this.getImage = function (name) {
         return _images[name];
-    }
+    };
 
     this.allResourcesReady = function () {
 
@@ -287,8 +273,5 @@ var RESOURCES = new (function () {
         }
 
         return true;
-
-    }
-
-
+    };
 })();

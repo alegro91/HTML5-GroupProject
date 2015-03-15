@@ -6,7 +6,7 @@ function Enemy2(x, vx) {
     GameObject.call(this);
 
     this.pos.x = x;
-    this.pos.y = 100;
+    this.pos.y = 80;
     this.vel.x = vx;
 
     this.padding.left = 0;
@@ -17,6 +17,7 @@ function Enemy2(x, vx) {
     var _lastJump = 0;
     var _jumpFrequency = Math.floor((Math.random() * 10) + 10)
     var _nextJump = _calculateNextJump();
+
 
     this.draw = function (ctx) {
         var pos = this.getRealCoordinates(ctx);
@@ -49,8 +50,8 @@ function Enemy2(x, vx) {
         GameObject.prototype.onWallHit.call(this, direction, canvas);
     };
 
+
     function _calculateNextJump() {
         return Math.floor((Math.random() * _jumpFrequency) + 1);
     }
-
 }
