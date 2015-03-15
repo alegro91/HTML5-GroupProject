@@ -35,6 +35,8 @@ function GameObject() {
     // Set to true when the object shoud be removed from the game
     this.deleted = false;
 
+    // Set to true if the object should be hidden
+    this.hidden = false;
 
     // The padding for the object. This is the
     // distance that the object is covering 
@@ -98,6 +100,11 @@ GameObject.prototype.onWallHit = function (direction, canvas) {
             break;
 
     }
+};
+
+// This is called when a collision is detected 
+// with another object.
+GameObject.prototype.collisionDetected = function (obj) {
 };
 
 
@@ -177,12 +184,16 @@ function MainGame(canvasId) {
                 objects[i].update(timeDelta / TIME_SCALING);
         }
 
+
+        _detectCollisions();
+
+
         // Remove deleted objects
         for (var i = 0; i < removed.length; i++) {
             objects.splice(removed[i], 1);
         }
 
-        _detectWallHits();
+
 
         _clearCanvas();
 
@@ -226,30 +237,97 @@ function MainGame(canvasId) {
         ctx.fillText("Loading resources", canvas.width / 2 - 20, canvas.height / 2);
     }
 
-    function _detectWallHits() {
-
-        for (var i = 0; i < objects.length; i++) {
-
-            var obj = objects[i];
-            var pad = obj.padding;
-
-            // Check y-direction
-            if (obj.pos.y <= pad.bottom) {
-                obj.onWallHit(DIRECTION.BOTTOM, canvas);
-            }
-            else if (obj.pos.y >= (canvas.height + pad.top)) {
-                obj.onWallHit(DIRECTION.TOP, canvas);
-            }
 
 
-            // Check x-direction 
-            if (obj.pos.x <= pad.left) {
-                obj.onWallHit(DIRECTION.LEFT, canvas);
-            }
-            else if (obj.pos.x >= (canvas.width - pad.right)) {
-                obj.onWallHit(DIRECTION.RIGHT, canvas);
+    function _detectCollisions() {
+
+        var num_objects = objects.length;
+
+        for (var i = 0; i < num_objects; i++) {
+
+            var obj_a = objects[i];
+
+            if(obj_a.hidden || obj_a.deleted)
+                continue;
+
+            _detectWallHit(obj_a);
+
+            for(var j=0; j < num_objects; j++){
+
+
+                if(i == j || objects[j].hidden)
+                    continue;
+
+                var obj_b = objects[j];
+
+
+                if(_checkForCollision(obj_a, obj_b)){
+                    obj_a.collisionDetected(obj_b);
+                    obj_b.collisionDetected(obj_a);
+
+                }
             }
         }
+    }
+
+
+    function _detectWallHit(obj) {
+
+        var pad = obj.padding;
+
+        // Check y-direction
+        if (obj.pos.y <= pad.bottom) {
+            obj.onWallHit(DIRECTION.BOTTOM, canvas);
+        }
+        else if (obj.pos.y >= (canvas.height + pad.top)) {
+            obj.onWallHit(DIRECTION.TOP, canvas);
+        }
+
+
+        // Check x-direction 
+        if (obj.pos.x <= pad.left) {
+            obj.onWallHit(DIRECTION.LEFT, canvas);
+        }
+        else if (obj.pos.x >= (canvas.width - pad.right)) {
+            obj.onWallHit(DIRECTION.RIGHT, canvas);
+        }
+
+    }
+
+    // Simple check for non-rotating rectangles.
+    function _checkForCollision(a, b){
+
+        // TODO: Currently no objects use the left or top
+        // padding so we don't take this into account.
+        // If this change this code needs to be updatd.
+
+        var leftMost = a;
+        var rightMost = b;
+        if(a.pos.x > b.pos.x){
+            leftMost = b;
+            rightMost = a;
+        }
+
+        // If the rightmost object is further to the right than the 
+        // leftmost plus its witdh there is no collision.
+        if((leftMost.pos.x + leftMost.padding.right) < rightMost.pos.x)
+            return false;
+
+        var upper = a;
+        var lower = b;
+
+        if(a.pos.y < b.pos.y){
+            upper = b;
+            lower = a;
+        }
+
+        // If the lower object is lower than the 
+        // upper plus its height there is no collision.
+        if((upper.pos.y - upper.padding.bottom) > lower.pos.y)
+            return false;
+
+        return true;
+
     }
 }
 
@@ -277,3 +355,9 @@ var RESOURCES = new (function () {
         return true;
     };
 })();
+
+
+
+
+
+

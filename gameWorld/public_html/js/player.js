@@ -46,6 +46,12 @@ function Player(leftAttack, rightAttack) {
         leftAttack.pos.y = this.pos.y - 10;
     };
 
+
+    this.collisionDetected = function(obj){
+        
+    }
+
+
     var playerInput = new InputEvents();
 
     playerInput.on("moveright", function (released)
@@ -132,6 +138,11 @@ function RightAttack(imageName){
 
     this.onWallHit = function(direction){
         // do nothing
+    }
+
+
+    this.collisionDetected = function(obj){
+        obj.destroy();
     }
 }
 
