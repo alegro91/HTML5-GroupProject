@@ -226,7 +226,7 @@ function MainGame(canvasId) {
 
 
         if(_enemySpawner != null)
-            _enemySpawner.update(timeDelta);
+            _enemySpawner.update(time);
 
 
     };
