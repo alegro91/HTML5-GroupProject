@@ -73,7 +73,7 @@ function Player(leftAttack, rightAttack) {
                 _setStunnedState(false);
             }, 2000);
         }
-    }
+    };
 
 
     var playerInput = new InputEvents();
@@ -155,7 +155,7 @@ function RightAttack(imageName){
 
     this.setDisabled = function(disabled){
         _temporaryDisabled = disabled;
-    }
+    };
 
     this.update = function(){
         if(this.hidden)
@@ -168,7 +168,7 @@ function RightAttack(imageName){
 
         // The attack should not be affected by gravity so
         // we don't call the parent's update method.
-    }
+    };
 
     this.draw = function (ctx) {
         var pos = this.getRealCoordinates(ctx);
@@ -183,17 +183,17 @@ function RightAttack(imageName){
     this.execute = function(){
         this.hidden = false;
         this._visibleFrameCount = 0;
-    }
+    };
 
     this.onWallHit = function(direction){
         // do nothing
-    }
+    };
 
 
     this.collisionDetected = function(obj){
         if(!_temporaryDisabled && obj.type == "enemy")
             obj.destroy();
-    }
+    };
 }
 
 LeftAttack.prototype = Object.create(RightAttack.prototype);
