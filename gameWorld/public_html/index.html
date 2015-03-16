@@ -8,6 +8,7 @@
         <script type="text/javascript" src="js/player.js"></script>
         <script type="text/javascript" src="js/enemy1.js"></script>
         <script type="text/javascript" src="js/enemy2.js"></script>
+        <script type="text/javascript" src="js/creatureSpawner.js"></script>
         
         <link rel="stylesheet" type="text/css" href="canvasStyle.css">
     </head>
@@ -25,9 +26,15 @@
             game.addGameObject(rightAttack);
             game.addGameObject(leftAttack);
             game.addGameObject(new Player(leftAttack, rightAttack));
+
+
             game.addGameObject(new Enemy1(10, 7));
             game.addGameObject(new Enemy1(100, -7));
             game.addGameObject(new Enemy2(900, -4));
+
+            var spawner = new Spawner(game);
+            game.setEnemySpawner(spawner);
+
             game.start();
         </script>
     </body>
