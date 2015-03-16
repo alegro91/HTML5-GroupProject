@@ -165,7 +165,7 @@ function MainGame(canvasId) {
     var _this = this;
     var prevTime = null;
 
-
+    var _enemySpawner = null;
 
     var _enemyCount = 0;
 
@@ -177,6 +177,11 @@ function MainGame(canvasId) {
 
     this.getEnemyCount = function(){
         return _enemyCount;
+    };
+
+
+    this.setEnemySpawner = function(spawner){
+        _enemySpawner = spawner;
     }
 
     this.update = function (time) {
@@ -209,8 +214,8 @@ function MainGame(canvasId) {
             objects.splice(removed[i], 1);
         }
 
-
         _clearCanvas();
+
 
         // Draw objects
         for (var i = 0; i < objects.length; i++) {
@@ -218,6 +223,12 @@ function MainGame(canvasId) {
                 continue;
             objects[i].draw(ctx);
         }
+
+
+        if(_enemySpawner != null)
+            _enemySpawner.update(timeDelta);
+
+
     };
 
 
