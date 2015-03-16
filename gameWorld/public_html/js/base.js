@@ -165,9 +165,19 @@ function MainGame(canvasId) {
     var _this = this;
     var prevTime = null;
 
+
+
+    var _enemyCount = 0;
+
     this.addGameObject = function (obj) {
         objects.push(obj);
+        if(obj.type == "enemy")
+            _enemyCount++;
     };
+
+    this.getEnemyCount = function(){
+        return _enemyCount;
+    }
 
     this.update = function (time) {
 
@@ -193,9 +203,11 @@ function MainGame(canvasId) {
 
         // Remove deleted objects
         for (var i = 0; i < removed.length; i++) {
+            if(objects[removed[i]].type == "enemy")
+                _enemyCount--;
+
             objects.splice(removed[i], 1);
         }
-
 
 
         _clearCanvas();
@@ -372,6 +384,8 @@ var RESOURCES = new (function () {
         return true;
     };
 })();
+
+
 
 
 
