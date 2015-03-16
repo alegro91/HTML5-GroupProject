@@ -1,4 +1,5 @@
 RESOURCES.addImage("player", "img/player.png");
+RESOURCES.addSound("attack", "sound/hoSound.mp3");
 
 Player.prototype = Object.create(GameObject.prototype);
 
@@ -118,6 +119,7 @@ function Player(leftAttack, rightAttack) {
     }
 
     function _executeAttack(attack){
+        RESOURCES.getSound("attack").play();
         attack.execute();
         _lastAttack = (new Date()).getTime();
 

@@ -338,20 +338,34 @@ function MainGame(canvasId) {
 var RESOURCES = new (function () {
 
     var _images = {};
+    var _sounds = {};
 
     this.addImage = function (name, path) {
         _images[name] = new Image();
         _images[name].src = path;
     };
 
+    this.addSound = function (name, path) {
+        _sounds[name] = new Audio(path);
+    };
+
     this.getImage = function (name) {
         return _images[name];
     };
 
+    this.getSound = function (name) {
+        return _sounds[name];
+    };
+
     this.allResourcesReady = function () {
 
-        for (i in _images) {
+        for (var i in _images) {
             if (!_images[i].complete)
+                return false;
+        }
+
+        for (var i in _sounds) {
+            if (_sounds[i].readyState != 4)
                 return false;
         }
 
