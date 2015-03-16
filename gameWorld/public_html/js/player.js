@@ -69,7 +69,6 @@ function Player(leftAttack, rightAttack) {
            ){
             _setStunnedState(true);
             setTimeout(function(){
-                console.log("Unstun");
                 _lastStunned = (new Date()).getTime();
                 _setStunnedState(false);
             }, 2000);
