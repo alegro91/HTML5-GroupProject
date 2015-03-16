@@ -14,6 +14,8 @@ function Player(leftAttack, rightAttack) {
     var _moving = false;
     var _groundDecel = 20;
 
+    this.type = "player";
+
     this.padding.left = 0;
     this.padding.right = 30;
     this.padding.bottom = 70;
@@ -142,7 +144,8 @@ function RightAttack(imageName){
 
 
     this.collisionDetected = function(obj){
-        obj.destroy();
+        if(obj.type == "enemy")
+            obj.destroy();
     }
 }
 

@@ -14,6 +14,8 @@ function Enemy2(x, vx) {
     this.padding.bottom = 80;
     this.padding.top = 0;
 
+    this.type = "enemy";
+
     var _lastJump = 0;
     var _jumpFrequency = Math.floor((Math.random() * 10) + 10)
     var _nextJump = _calculateNextJump();

@@ -38,6 +38,9 @@ function GameObject() {
     // Set to true if the object should be hidden
     this.hidden = false;
 
+    // The type of the object. enemy, player, castle...
+    this.type = "";
+
     // The padding for the object. This is the
     // distance that the object is covering 
     // in each direction from its // (x,y)-position
@@ -164,7 +167,7 @@ function MainGame(canvasId) {
 
     this.addGameObject = function (obj) {
         objects.push(obj);
-    }
+    };
 
     this.update = function (time) {
 
@@ -182,7 +185,7 @@ function MainGame(canvasId) {
                 removed.push(i);
             else
                 objects[i].update(timeDelta / TIME_SCALING);
-        }
+        };
 
 
         _detectCollisions();

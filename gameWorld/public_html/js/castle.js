@@ -9,6 +9,8 @@ function Castle() {
 
     var _this = this;
 
+    this.type = "castle";
+
     this.padding.left = 0;
     this.padding.right = 120;
     this.padding.bottom = 120;
