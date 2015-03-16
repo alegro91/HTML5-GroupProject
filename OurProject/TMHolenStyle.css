@@ -105,6 +105,11 @@ header{
     margin-right: auto ;
 }
 
+.centerDiv{
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /*Sidebars*/
 aside {
     /*    background: linear-gradient(-90deg, #111133, #111566, #111133);*/
