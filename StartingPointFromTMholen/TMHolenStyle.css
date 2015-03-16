@@ -191,9 +191,11 @@ footer small i a:hover{
 .autoHeight{
     height: auto;
     min-height: 0; 
-    margin-bottom: 30px;
 }
 
+.marginBetweenDiv{
+    margin-bottom: 30px;
+}
 
 .center:first-child{
     text-align: center;
