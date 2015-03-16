@@ -18,6 +18,10 @@
             game.addGameObject(new Castle());
             var rightAttack = new RightAttack();
             var leftAttack = new LeftAttack();
+            // The attacks must be added before the player 
+            // for the collision detection to work correctly
+            // or else the enemies can be killed after the player
+            // is stunned.
             game.addGameObject(rightAttack);
             game.addGameObject(leftAttack);
             game.addGameObject(new Player(leftAttack, rightAttack));
