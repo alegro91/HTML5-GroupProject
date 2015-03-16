@@ -193,7 +193,8 @@ footer small i a:hover{
     min-height: 0; 
 }
 
-.marginBetweenDiv{
+.blockDisplayDiv{
+    display: block;
     margin-bottom: 30px;
 }
 
