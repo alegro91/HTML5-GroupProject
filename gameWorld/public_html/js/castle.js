@@ -4,20 +4,45 @@ Castle.prototype = Object.create(GameObject.prototype);
 
 function Castle() {
     GameObject.call(this);
-    this.pos.x = 400;
-    this.pos.y = 50;
+    this.pos.x = 450;
+    this.pos.y = 90;
 
     var _this = this;
 
     this.type = "castle";
 
+
+    // The padding is a little smaller than 
+    // the image to make the enemies go slightly into 
+    // the castle before they disappear.
     this.padding.left = 0;
-    this.padding.right = 120;
-    this.padding.bottom = 120;
+    this.padding.right = 20;
+    this.padding.bottom = 90;
     this.padding.top = 0;
 
-    this.draw = function (context) {
+    var _currentHp = 20;
+
+    this.draw = function(context) {
         var pos = this.getRealCoordinates(context);
-        context.drawImage(RESOURCES.getImage("castle"), pos.x, pos.y, 120, 120);
+        // Draw the image a little outside the padding
+        context.drawImage(RESOURCES.getImage("castle"), pos.x-50, pos.y-30, 120, 120);
+    };
+
+
+    this.collisionDetected = function(obj){
+        // if(obj.type == "enemy" && !obj.deleted){
+        //     _currentHp--;
+        //     obj.destroy();
+        //
+        //     console.log("Castle Hp: ", _currentHp);
+        // }
+    };
+
+    this.onWallHit = function(){
+        // Do nothing
+    };
+
+    this.update = function(){
+        // Do nothing
     };
 }
