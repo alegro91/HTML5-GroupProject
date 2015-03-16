@@ -22,6 +22,11 @@ function Player(leftAttack, rightAttack) {
     this.padding.top = 0;
 
 
+    // The time of the last attack
+    var _lastAttack = 0;
+    var _attackDelay = 700; // milliseconds
+
+
     this.draw = function (context) {
         var pos = this.getRealCoordinates(context);
         context.drawImage(RESOURCES.getImage("player"), pos.x, pos.y, 30, 70);
@@ -50,7 +55,6 @@ function Player(leftAttack, rightAttack) {
 
 
     this.collisionDetected = function(obj){
-        
     }
 
 
@@ -78,15 +82,28 @@ function Player(leftAttack, rightAttack) {
 
     playerInput.on("leftAttack", function (released)
     {
-        if(!released)
-            leftAttack.execute();
+        if(!released && _canDoAttack()){
+            _executeAttack(leftAttack);
+        }
     });
 
     playerInput.on("rightAttack", function (released)
     {
-        if(!released)
-            rightAttack.execute();
+        if(!released && _canDoAttack()){
+            _executeAttack(rightAttack);
+        }
     });
+
+
+    function _canDoAttack(){
+        return ((new Date()).getTime() - _lastAttack) > _attackDelay;
+    }
+
+    function _executeAttack(attack){
+        attack.execute();
+        _lastAttack = (new Date()).getTime();
+
+    }
 }
 
 
@@ -109,6 +126,7 @@ function RightAttack(imageName){
 
     // The number of frames the attack currently has been visible
     this._visibleFrameCount = 0;
+
 
     this.update = function(){
         if(this.hidden)
