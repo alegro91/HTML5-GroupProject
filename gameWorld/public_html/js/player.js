@@ -26,6 +26,10 @@ function Player(leftAttack, rightAttack) {
     var _lastAttack = 0;
     var _attackDelay = 700; // milliseconds
 
+    var _stunned = false;
+    var _lastStunned = 0;
+    var _stunnedDelay = 1000; // milliseconds
+
 
     this.draw = function (context) {
         var pos = this.getRealCoordinates(context);
@@ -35,8 +39,11 @@ function Player(leftAttack, rightAttack) {
 
     this.update = function (timedelta) {
 
-        // Smoothly slow down the object when it is on the ground
-        if (!_moving && this.pos.y == this.padding.bottom) {
+        if(_stunned){
+            this.vel.x = 0;
+        }
+        else if (!_moving && this.pos.y == this.padding.bottom) {
+            // Smoothly slow down the object when it is on the ground
             var diff = _groundDecel * timedelta;
             if (diff < Math.abs(this.vel.x))
                 this.vel.x += -Math.sign(this.vel.x) * diff;
@@ -55,6 +62,17 @@ function Player(leftAttack, rightAttack) {
 
 
     this.collisionDetected = function(obj){
+        if(!_stunned && obj.type == "enemy" && 
+           ((new Date()).getTime() - _lastStunned) > _stunnedDelay &&
+           !obj.deleted // not killed by an attack
+           ){
+            _setStunnedState(true);
+            setTimeout(function(){
+                console.log("Unstun");
+                _lastStunned = (new Date()).getTime();
+                _setStunnedState(false);
+            }, 2000);
+        }
     }
 
 
@@ -74,7 +92,7 @@ function Player(leftAttack, rightAttack) {
 
     playerInput.on("jump", function ()
     {
-        if (_this.pos.y == _this.padding.bottom)
+        if (!_stunned && _this.pos.y == _this.padding.bottom)
         {
             _this.setVelocity(null, playerJumpHeight);
         }
@@ -96,13 +114,19 @@ function Player(leftAttack, rightAttack) {
 
 
     function _canDoAttack(){
-        return ((new Date()).getTime() - _lastAttack) > _attackDelay;
+        return !_stunned && ((new Date()).getTime() - _lastAttack) > _attackDelay;
     }
 
     function _executeAttack(attack){
         attack.execute();
         _lastAttack = (new Date()).getTime();
 
+    }
+
+    function _setStunnedState(state){
+        _stunned = state;
+        leftAttack.setDisabled(state);
+        rightAttack.setDisabled(state);
     }
 }
 
@@ -124,9 +148,14 @@ function RightAttack(imageName){
 
     this.hidden = true;
 
+    var _temporaryDisabled = false;
+
     // The number of frames the attack currently has been visible
     this._visibleFrameCount = 0;
 
+    this.setDisabled = function(disabled){
+        _temporaryDisabled = disabled;
+    }
 
     this.update = function(){
         if(this.hidden)
@@ -162,7 +191,7 @@ function RightAttack(imageName){
 
 
     this.collisionDetected = function(obj){
-        if(obj.type == "enemy")
+        if(!_temporaryDisabled && obj.type == "enemy")
             obj.destroy();
     }
 }
