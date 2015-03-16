@@ -147,6 +147,8 @@ function RightAttack(imageName){
     this.padding.bottom = 40;
     this.padding.top = 0;
 
+    this.type = "attack";
+
     this.hidden = true;
 
     var _temporaryDisabled = false;
