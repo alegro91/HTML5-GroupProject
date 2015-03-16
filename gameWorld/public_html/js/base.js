@@ -114,8 +114,8 @@ function InputEvents() {
         39: "moveright",
         37: "moveleft",
         38: "jump",
-        97: "leftAttack",
-        100: "rightAttack",
+        90: "leftAttack",
+        88: "rightAttack",
     };
 
     var _event_handlers = {};
