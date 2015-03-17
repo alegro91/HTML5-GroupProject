@@ -190,7 +190,6 @@ function RightAttack(imageName){
 
     this.execute = function(){
         this.hidden = false;
-        this.setDisabled(false);
         this._visibleFrameCount = 0;
     };
 
@@ -200,10 +199,9 @@ function RightAttack(imageName){
 
 
     this.collisionDetected = function(obj){
-        if(!_temporaryDisabled && obj.type == "enemy"){
+        if(!_temporaryDisabled && obj.type == "enemy" && !obj.isStunned()){
             obj.takeHit();
             obj.stun();
-            this.setDisabled(true);
         }
     };
 }
