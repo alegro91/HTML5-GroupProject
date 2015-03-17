@@ -35,12 +35,14 @@ function Enemy1(x, vx) {
 
     this.update = function (timedelta) {
 
-        _lastJump += timedelta;
+        if(!this.isStunned()){
+            _lastJump += timedelta;
 
-        if (_lastJump > _nextJump) {
-            this.setVelocity(null, Math.floor(Math.random() * 40 + 30));
-            _lastJump = 0;
-            _nextJump = _calculateNextJump();
+            if (_lastJump > _nextJump) {
+                this.setVelocity(null, Math.floor(Math.random() * 40 + 30));
+                _lastJump = 0;
+                _nextJump = _calculateNextJump();
+            }
         }
 
         GameObject.prototype.update.call(this, timedelta);
@@ -62,4 +64,31 @@ function Enemy1(x, vx) {
     function _calculateNextJump() {
         return Math.floor((Math.random() * _jumpFrequency) + 1);
     }
+}
+
+
+
+RESOURCES.addImage("enemy2", "img/enemy2.png");
+
+Enemy2.prototype = Object.create(Enemy1.prototype);
+
+function Enemy2(x, vx) {
+    Enemy1.call(this, x, vx);
+
+    this.pos.y = 80;
+
+    this.padding.left = 0;
+    this.padding.right = 80;
+    this.padding.bottom = 80;
+    this.padding.top = 0;
+
+    this.hp = 4;
+
+    this.draw = function (ctx) {
+        var pos = this.getRealCoordinates(ctx);
+        ctx.font="12px sans-serif";
+        ctx.fillText(this.hp, pos.x + 35, pos.y-10);
+        ctx.drawImage(RESOURCES.getImage("enemy2"), pos.x, pos.y, 80, 80);
+    };
+
 }
