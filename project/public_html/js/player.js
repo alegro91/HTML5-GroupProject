@@ -27,14 +27,14 @@ function Player(leftAttack, rightAttack) {
     var _lastAttack = 0;
     var _attackDelay = 100; // milliseconds
 
-    var _stunned = false;
+
     var _lastStunned = 0;
     var _stunnedDelay = 1000; // milliseconds
 
 
     this.draw = function (ctx) {
         var pos = this.getRealCoordinates(ctx);
-        if(_stunned){
+        if(this.isStunned()){
             ctx.font="15px sans-serif";
             ctx.fillText("X", pos.x + 15, pos.y-10);
         }
@@ -44,7 +44,8 @@ function Player(leftAttack, rightAttack) {
 
     this.update = function (timedelta) {
 
-        if(_stunned){
+        if(this.isStunned()){
+            // Prevent movement
             this.vel.x = 0;
         }
         else if (!_moving && this.pos.y == this.padding.bottom) {
@@ -67,15 +68,16 @@ function Player(leftAttack, rightAttack) {
 
 
     this.collisionDetected = function(obj){
-        if(!_stunned && obj.type == "enemy" && 
+        if(!this.isStunned() && obj.type == "enemy" && 
            ((new Date()).getTime() - _lastStunned) > _stunnedDelay &&
-           !obj.hasBeenHit()
+           !obj.isStunned()
            ){
-            _setStunnedState(true);
+            this.stun();
+            _setAttacksDisabled(true);
             setTimeout(function(){
                 _lastStunned = (new Date()).getTime();
-                _setStunnedState(false);
-            }, 2000);
+                _setAttacksDisabled(false);
+            }, this.stunnedTimeout);
         }
     };
 
@@ -96,7 +98,7 @@ function Player(leftAttack, rightAttack) {
 
     playerInput.on("jump", function ()
     {
-        if (!_stunned && _this.pos.y == _this.padding.bottom)
+        if (!_this.isStunned() && _this.pos.y == _this.padding.bottom)
         {
             _this.setVelocity(null, playerJumpHeight);
         }
@@ -118,7 +120,7 @@ function Player(leftAttack, rightAttack) {
 
 
     function _canDoAttack(){
-        return !_stunned && ((new Date()).getTime() - _lastAttack) > _attackDelay;
+        return !_this.isStunned() && ((new Date()).getTime() - _lastAttack) > _attackDelay;
     }
 
     function _executeAttack(attack){
@@ -128,8 +130,7 @@ function Player(leftAttack, rightAttack) {
 
     }
 
-    function _setStunnedState(state){
-        _stunned = state;
+    function _setAttacksDisabled(state){
         leftAttack.setDisabled(state);
         rightAttack.setDisabled(state);
     }
@@ -201,6 +202,7 @@ function RightAttack(imageName){
     this.collisionDetected = function(obj){
         if(!_temporaryDisabled && obj.type == "enemy"){
             obj.takeHit();
+            obj.stun();
             this.setDisabled(true);
         }
     };

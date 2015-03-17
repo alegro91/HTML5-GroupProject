@@ -41,10 +41,24 @@ function GameObject() {
     // The type of the object. enemy, player, castle...
     this.type = "";
 
+    // The objects hp
+    this.hp = Infinity;
+
+
+    // True if obejct is stunned.
+    this.stunned = false;
+
+    // How long to be stunned.
+    this.stunnedTimeout = 1000; // milliseconds
+
     // The padding for the object. This is the
     // distance that the object is covering 
     // in each direction from its // (x,y)-position
     this.padding = new Padding(0, 0, 0, 0);
+
+
+    // Used for shake effect
+    var _shakeCounter = 0;
 
 
     this.getRealCoordinates = function (ctx) {
@@ -67,6 +81,52 @@ function GameObject() {
     this.destroy = function () {
         this.deleted = true;
     };
+
+    this.takeHit = function(){
+        this.hp--;
+        if(this.hp == 0)
+            this.destroy();
+    };
+
+    this.stun = function(){
+
+        this.stunned = true;
+
+        // backup old values
+        var _vel_x = this.vel.x;
+        var _pos_x = this.pos.x;
+
+        // Stop sideways movement
+        this.vel.x = 0;
+
+        setTimeout(function(){
+
+            _this.stunned = false;
+            _shakeCounter = 0;
+
+            // Reset values
+            _this.vel.x = _vel_x;
+            _this.pos.x = _pos_x
+
+        }, this.stunnedTimeout);
+    }
+
+    this.isStunned = function(){
+        return this.stunned;
+    }
+
+
+    // Make the enemy shake from side to side
+    this._createShakeEffect = function(){
+        if((_shakeCounter % 2 == 0)){
+            this.pos.x += 10;
+        }else
+            this.pos.x -= 10;
+        
+        _shakeCounter++;
+    }
+
+
 }
 
 
@@ -78,6 +138,11 @@ GameObject.prototype.draw = function (ctx) {
 // This is called every time the object should
 // update its position.
 GameObject.prototype.update = function (timedelta) {
+
+    if(this.stunned){
+        this._createShakeEffect();
+    }
+
     this.vel.y += this.acc.y * timedelta;
     this.pos.y += this.vel.y * timedelta + 0.5 * this.acc.y * timedelta * timedelta;
     this.pos.x += this.vel.x * timedelta + 0.5 * this.acc.x * timedelta * timedelta;
