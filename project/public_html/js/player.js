@@ -1,5 +1,7 @@
 RESOURCES.addImage("player", "img/player.png");
-RESOURCES.addSound("attack", "sound/hoSound.mp3");
+RESOURCES.addSound("attack1", "sound/hoSound.mp3");
+RESOURCES.addSound("attack2", "sound/hiSound.mp3");
+RESOURCES.addSound("attack3", "sound/haSound.mp3");
 
 Player.prototype = Object.create(GameObject.prototype);
 
@@ -125,7 +127,7 @@ function Player(leftAttack, rightAttack) {
 
     function _executeAttack(attack){
         _lastAttack = (new Date()).getTime();
-        RESOURCES.getSound("attack").play();
+        _playAttackSound();
         attack.execute();
 
     }
@@ -133,6 +135,13 @@ function Player(leftAttack, rightAttack) {
     function _setAttacksDisabled(state){
         leftAttack.setDisabled(state);
         rightAttack.setDisabled(state);
+    }
+
+
+    function _playAttackSound(){
+        
+        var sound_nr = Math.floor((Math.random()*3)) + 1;
+        RESOURCES.getSound("attack"+sound_nr).play();
     }
 }
 
