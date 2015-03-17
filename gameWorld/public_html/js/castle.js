@@ -22,20 +22,22 @@ function Castle() {
 
     var _currentHp = 20;
 
-    this.draw = function(context) {
-        var pos = this.getRealCoordinates(context);
+    this.draw = function(ctx) {
+        var pos = this.getRealCoordinates(ctx);
+        ctx.font="12px sans-serif";
+        ctx.fillText(_currentHp, pos.x, pos.y-35);
         // Draw the image a little outside the padding
-        context.drawImage(RESOURCES.getImage("castle"), pos.x-50, pos.y-30, 120, 120);
+        ctx.drawImage(RESOURCES.getImage("castle"), pos.x-50, pos.y-30, 120, 120);
     };
 
 
     this.collisionDetected = function(obj){
-        // if(obj.type == "enemy" && !obj.deleted){
-        //     _currentHp--;
-        //     obj.destroy();
-        //
-        //     console.log("Castle Hp: ", _currentHp);
-        // }
+        if(obj.type == "enemy" && !obj.deleted){
+            _currentHp--;
+            obj.destroy();
+
+            // console.log("Castle Hp: ", _currentHp);
+        }
     };
 
     this.onWallHit = function(){

@@ -25,16 +25,20 @@ function Player(leftAttack, rightAttack) {
 
     // The time of the last attack
     var _lastAttack = 0;
-    var _attackDelay = 700; // milliseconds
+    var _attackDelay = 100; // milliseconds
 
     var _stunned = false;
     var _lastStunned = 0;
     var _stunnedDelay = 1000; // milliseconds
 
 
-    this.draw = function (context) {
-        var pos = this.getRealCoordinates(context);
-        context.drawImage(RESOURCES.getImage("player"), pos.x, pos.y, 30, 70);
+    this.draw = function (ctx) {
+        var pos = this.getRealCoordinates(ctx);
+        if(_stunned){
+            ctx.font="15px sans-serif";
+            ctx.fillText("X", pos.x + 15, pos.y-10);
+        }
+        ctx.drawImage(RESOURCES.getImage("player"), pos.x, pos.y, 30, 70);
     };
 
 
@@ -65,7 +69,7 @@ function Player(leftAttack, rightAttack) {
     this.collisionDetected = function(obj){
         if(!_stunned && obj.type == "enemy" && 
            ((new Date()).getTime() - _lastStunned) > _stunnedDelay &&
-           !obj.deleted // not killed by an attack
+           !obj.hasBeenHit()
            ){
             _setStunnedState(true);
             setTimeout(function(){
@@ -118,9 +122,9 @@ function Player(leftAttack, rightAttack) {
     }
 
     function _executeAttack(attack){
+        _lastAttack = (new Date()).getTime();
         RESOURCES.getSound("attack").play();
         attack.execute();
-        _lastAttack = (new Date()).getTime();
 
     }
 
@@ -185,6 +189,7 @@ function RightAttack(imageName){
 
     this.execute = function(){
         this.hidden = false;
+        this.setDisabled(false);
         this._visibleFrameCount = 0;
     };
 
@@ -194,8 +199,10 @@ function RightAttack(imageName){
 
 
     this.collisionDetected = function(obj){
-        if(!_temporaryDisabled && obj.type == "enemy")
-            obj.destroy();
+        if(!_temporaryDisabled && obj.type == "enemy"){
+            obj.takeHit();
+            this.setDisabled(true);
+        }
     };
 }
 
