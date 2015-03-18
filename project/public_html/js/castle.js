@@ -25,7 +25,7 @@ function Castle(game) {
     this.padding.bottom = 90;
     this.padding.top = 0;
 
-    this.hp = 3;
+    this.hp = 20;
 
     this.draw = function(ctx) {
         var pos = this.getRealCoordinates(ctx);
