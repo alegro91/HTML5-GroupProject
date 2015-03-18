@@ -1,13 +1,7 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <title>Game</title>
-
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Group Project">
@@ -19,23 +13,18 @@ and open the template in the editor.
         <script type="text/javascript" src="js/creatureSpawner.js"></script>
 
         <link rel="stylesheet" type="text/css" href="canvasStyle.css">
-
         <link rel="stylesheet" type="text/css" href="TMHolenStyle.css">
     </head>
 
     <body>
-
         <nav>
-
             <ul>
                 <li><a href="index.html">Game</a></li>
                 <li><a href="howToPlay.html">How to Play</a></li>
                 <li><a href="javascriptFun.html">JavaScript Fun</a></li>
                 <li><a href="development.html">The Development</a></li>
                 <li><a href="about.html">About Us</a></li>
-
             </ul>
-
         </nav>
 
         <aside>    
@@ -46,14 +35,10 @@ and open the template in the editor.
             <header>
                 <div class="container"><a href="index.html"><img src="" alt="Team4 Logo" id="logo"></a></div>
             </header>
-
             <main>    
                 <div class="center">
-
                     <h1 class="noMarginLeft">Welcome to our game!</h1>
                     <p>If you need help check out the "How to Play" page.<br>Remember to check out the other pages too, they are interesting!</p>
-
-
                 </div>
 
                 <div id="gameSplash" style="width: 900px;height:500px;">
@@ -64,9 +49,9 @@ and open the template in the editor.
                         <a href="#" id="restartGame">Play again</a>
                     </p>
                 </div>
-                <canvas  id="gameWorld" width="900" height="500"></canvas>
+                <canvas id="gameWorld" width="900" height="500"></canvas>
                 <script>
-                    function resetGame(game){
+                    function resetGame(game) {
                         game.reset();
 
                         game.addGameObject(new Castle(game));
@@ -97,7 +82,7 @@ and open the template in the editor.
                     var gameScore = document.getElementById("gameScore");
                     var restartGame = document.getElementById("restartGame");
 
-                    startButton.addEventListener("click", function(e){
+                    startButton.addEventListener("click", function (e) {
                         e.preventDefault();
                         splash.style.display = "none";
                         gameCanvas.style.display = "block";
@@ -105,7 +90,7 @@ and open the template in the editor.
 
                     })
 
-                    restartGame.addEventListener("click", function(e){
+                    restartGame.addEventListener("click", function (e) {
                         e.preventDefault();
 
                         gameOver.style.display = "none";
@@ -115,16 +100,14 @@ and open the template in the editor.
 
                     })
 
-                    game.registerGameOverCallback(function(){
+                    game.registerGameOverCallback(function () {
                         gameScore.innerText = game.getScore();
                         gameCanvas.style.display = "none";
                         gameOver.style.display = "block";
 
                     })
                 </script>
-
             </main>
-
         </div>
 
         <aside id="Right">
@@ -136,6 +119,5 @@ and open the template in the editor.
                 <small><i>Team4 &copy; 2015 - <a href="">TMHolen@tmholen.com</a></i></small>
             </div>
         </footer>  
-
     </body>
 </html>
