@@ -237,6 +237,12 @@ function MainGame(canvasId) {
 
     var _enemyCount = 0;
 
+    var _running = false;
+    var _gameOverCallback = null;
+
+    var _score = 0;
+
+
     this.addGameObject = function (obj) {
         objects.push(obj);
         if(obj.type == "enemy")
@@ -250,6 +256,11 @@ function MainGame(canvasId) {
 
     this.setEnemySpawner = function(spawner){
         _enemySpawner = spawner;
+    }
+
+
+    this.getScore = function(){
+        return _score;
     }
 
     this.update = function (time) {
@@ -276,8 +287,11 @@ function MainGame(canvasId) {
 
         // Remove deleted objects
         for (var i = 0; i < removed.length; i++) {
-            if(objects[removed[i]].type == "enemy")
+            if(objects[removed[i]].type == "enemy"){
                 _enemyCount--;
+                if(objects[removed[i]].hp == 0)
+                    _score++;
+            }
 
             objects.splice(removed[i], 1);
         }
@@ -300,11 +314,28 @@ function MainGame(canvasId) {
     };
 
 
+    this.registerGameOverCallback = function(func){
+        _gameOverCallback = func;
+
+    }
+
+    this.gameOver = function(){
+        _running = false;
+        if(_gameOverCallback != null)
+            _gameOverCallback();
+    }
+
+
     this.start = function () {
 
+        _running = true;
+
         function loop(time) {
-            _this.update(time);
+            if(!_running)
+                return;
+
             window.requestAnimationFrame(loop);
+            _this.update(time);
         }
 
         function loadResources() {

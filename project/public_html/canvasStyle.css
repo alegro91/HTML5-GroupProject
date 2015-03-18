@@ -8,19 +8,19 @@ and open the template in the editor.
     Author     : tor-martin
 */
 
-#gameWorld, #gameSplash{
+#gameWorld, #gameSplash, #gameOver{
     border: 1px solid #000000;
     background-image: url(img/background.png);
 }
 
-#gameWorld{
+#gameWorld, #gameOver{
     display: none;
 }
-#gameSplash{
+#gameSplash, #gameOver{
     text-align: center;
     font-size: 1.8em;
 }
-#gameSplash a{
+#gameSplash a, #gameOver p{
     color: black;
     display: block;
     height: 100%;
@@ -28,5 +28,8 @@ and open the template in the editor.
     padding-top: 30%;
     vertical-align: middle;
     box-sizing: border-box;
+}
+#gameScore{
+    display: block;
 }
 

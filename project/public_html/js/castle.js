@@ -2,7 +2,7 @@ RESOURCES.addImage("castle", "img/castle.png");
 
 Castle.prototype = Object.create(GameObject.prototype);
 
-function Castle() {
+function Castle(game) {
     GameObject.call(this);
     this.pos.x = 450;
     this.pos.y = 90;
@@ -25,12 +25,12 @@ function Castle() {
     this.padding.bottom = 90;
     this.padding.top = 0;
 
-    var _currentHp = 20;
+    this.hp = 3;
 
     this.draw = function(ctx) {
         var pos = this.getRealCoordinates(ctx);
         ctx.font="12px sans-serif";
-        ctx.fillText(_currentHp, pos.x, pos.y-35);
+        ctx.fillText(this.hp, pos.x, pos.y-35);
         // Draw the image a little outside the padding
         ctx.drawImage(RESOURCES.getImage("castle"), pos.x-50, pos.y-30, 120, 120);
     };
@@ -38,8 +38,12 @@ function Castle() {
 
     this.collisionDetected = function(obj){
         if(obj.type == "enemy" && !obj.deleted){
-            _currentHp--;
             obj.destroy();
+            this.takeHit();
+            if(this.hp == 0){
+                game.gameOver();
+                return;
+            }
             if(!this.isStunned())
                 this.stun();
         }

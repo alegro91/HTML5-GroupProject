@@ -59,10 +59,13 @@ and open the template in the editor.
                 <div id="gameSplash" style="width: 900px;height:500px;">
                     <a href="#" id="startGame">Click to start</a>
                 </div>
+                <div id="gameOver" style="width: 900px;height:500px;">
+                    <p>Your score was: <span id="gameScore">43</span</p>
+                </div>
                 <canvas  id="gameWorld" width="900" height="500"></canvas>
                 <script>
                     var game = new MainGame("gameWorld");
-                    game.addGameObject(new Castle());
+                    game.addGameObject(new Castle(game));
                     var rightAttack = new RightAttack();
                     var leftAttack = new LeftAttack();
                     // The attacks must be added before the player 
@@ -82,12 +85,22 @@ and open the template in the editor.
                     var splash = document.getElementById("gameSplash");
                     var startButton = document.getElementById("startGame");
                     var gameCanvas = document.getElementById("gameWorld");
+                    var gameOver = document.getElementById("gameOver");
+                    var gameScore = document.getElementById("gameScore");
 
                     startButton.addEventListener("click", function(e){
                         e.preventDefault();
                         splash.style.display = "none";
                         gameCanvas.style.display = "block";
                         game.start();
+
+                    })
+
+                    game.registerGameOverCallback(function(){
+
+                        gameScore.innerText = game.getScore();
+                        gameCanvas.style.display = "none";
+                        gameOver.style.display = "block";
 
                     })
                 </script>
