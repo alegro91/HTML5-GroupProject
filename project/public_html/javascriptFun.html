@@ -45,11 +45,21 @@ and open the template in the editor.
                     <h1 class="noMarginLeft">Welcome to the JavaScript Fun site!</h1>
 
                     <div class="divInlineBlockContainer">
-                        <h2>Insert heading here</h2>
-                        <p>Insert JavaScript application here here</p>
-                    </div>
+                        <h2>Click counter</h2>
+                      
+              <script type="text/javascript">
 
-                </div>
+              var clicks = 0;
+              function hello() {
+                  clicks += 1;
+                  document.getElementById("clicks").innerHTML = clicks; };
+              </script>
+              <button type="button" onclick="hello()">Click me</button>
+              <p>Clicks: <a id="clicks">0</a></p>
+              
+              
+
+                    </div>
             </main>
 
         </div>
