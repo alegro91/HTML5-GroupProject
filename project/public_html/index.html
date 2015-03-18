@@ -56,6 +56,9 @@ and open the template in the editor.
 
                 </div>
 
+                <div id="gameSplash" style="width: 900px;height:500px;">
+                    <a href="#" id="startGame">Click to start</a>
+                </div>
                 <canvas  id="gameWorld" width="900" height="500"></canvas>
                 <script>
                     var game = new MainGame("gameWorld");
@@ -74,7 +77,19 @@ and open the template in the editor.
                     game.addGameObject(new Enemy2(900, -4));
                     var spawner = new Spawner(game);
                     game.setEnemySpawner(spawner);
-                    game.start();
+                    // game.start();
+
+                    var splash = document.getElementById("gameSplash");
+                    var startButton = document.getElementById("startGame");
+                    var gameCanvas = document.getElementById("gameWorld");
+
+                    startButton.addEventListener("click", function(e){
+                        e.preventDefault();
+                        splash.style.display = "none";
+                        gameCanvas.style.display = "block";
+                        game.start();
+
+                    })
                 </script>
 
             </main>

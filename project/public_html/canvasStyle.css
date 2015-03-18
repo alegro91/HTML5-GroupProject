@@ -8,7 +8,25 @@ and open the template in the editor.
     Author     : tor-martin
 */
 
-canvas{
+#gameWorld, #gameSplash{
     border: 1px solid #000000;
     background-image: url(img/background.png);
 }
+
+#gameWorld{
+    display: none;
+}
+#gameSplash{
+    text-align: center;
+    font-size: 1.8em;
+}
+#gameSplash a{
+    color: black;
+    display: block;
+    height: 100%;
+    width: 100%;
+    padding-top: 30%;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
