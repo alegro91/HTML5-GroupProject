@@ -11,6 +11,11 @@ function Castle() {
 
     this.type = "castle";
 
+    this.acc.x = 0;
+    this.acc.y = 0;
+    this.vel.x = 0;
+    this.vel.y = 0;
+
 
     // The padding is a little smaller than 
     // the image to make the enemies go slightly into 
@@ -35,16 +40,11 @@ function Castle() {
         if(obj.type == "enemy" && !obj.deleted){
             _currentHp--;
             obj.destroy();
-
-            // console.log("Castle Hp: ", _currentHp);
+            this.stun();
         }
     };
 
     this.onWallHit = function(){
-        // Do nothing
-    };
-
-    this.update = function(){
         // Do nothing
     };
 }
