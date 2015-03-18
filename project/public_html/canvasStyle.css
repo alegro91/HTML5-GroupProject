@@ -32,4 +32,7 @@ and open the template in the editor.
 #gameScore{
     display: block;
 }
+#restartGame{
+    color: blue;
+}
 

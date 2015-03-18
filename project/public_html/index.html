@@ -60,33 +60,42 @@ and open the template in the editor.
                     <a href="#" id="startGame">Click to start</a>
                 </div>
                 <div id="gameOver" style="width: 900px;height:500px;">
-                    <p>Your score was: <span id="gameScore">43</span</p>
+                    <p>Your score was: <span id="gameScore">43</span>
+                        <a href="#" id="restartGame">Play again</a>
+                    </p>
                 </div>
                 <canvas  id="gameWorld" width="900" height="500"></canvas>
                 <script>
+                    function resetGame(game){
+                        game.reset();
+
+                        game.addGameObject(new Castle(game));
+                        var rightAttack = new RightAttack();
+                        var leftAttack = new LeftAttack();
+                        // The attacks must be added before the player 
+                        // for the collision detection to work correctly
+                        // or else the enemies can be killed after the player
+                        // is stunned.
+                        game.addGameObject(rightAttack);
+                        game.addGameObject(leftAttack);
+                        game.addGameObject(new Player(leftAttack, rightAttack));
+                        game.addGameObject(new Enemy1(10, 7));
+                        game.addGameObject(new Enemy1(100, -7));
+                        game.addGameObject(new Enemy2(900, -4));
+                        var spawner = new Spawner(game);
+                        game.setEnemySpawner(spawner);
+
+                    }
                     var game = new MainGame("gameWorld");
-                    game.addGameObject(new Castle(game));
-                    var rightAttack = new RightAttack();
-                    var leftAttack = new LeftAttack();
-                    // The attacks must be added before the player 
-                    // for the collision detection to work correctly
-                    // or else the enemies can be killed after the player
-                    // is stunned.
-                    game.addGameObject(rightAttack);
-                    game.addGameObject(leftAttack);
-                    game.addGameObject(new Player(leftAttack, rightAttack));
-                    game.addGameObject(new Enemy1(10, 7));
-                    game.addGameObject(new Enemy1(100, -7));
-                    game.addGameObject(new Enemy2(900, -4));
-                    var spawner = new Spawner(game);
-                    game.setEnemySpawner(spawner);
-                    // game.start();
+
+                    resetGame(game);
 
                     var splash = document.getElementById("gameSplash");
                     var startButton = document.getElementById("startGame");
                     var gameCanvas = document.getElementById("gameWorld");
                     var gameOver = document.getElementById("gameOver");
                     var gameScore = document.getElementById("gameScore");
+                    var restartGame = document.getElementById("restartGame");
 
                     startButton.addEventListener("click", function(e){
                         e.preventDefault();
@@ -96,8 +105,17 @@ and open the template in the editor.
 
                     })
 
-                    game.registerGameOverCallback(function(){
+                    restartGame.addEventListener("click", function(e){
+                        e.preventDefault();
 
+                        gameOver.style.display = "none";
+                        gameCanvas.style.display = "block";
+                        resetGame(game);
+                        game.start();
+
+                    })
+
+                    game.registerGameOverCallback(function(){
                         gameScore.innerText = game.getScore();
                         gameCanvas.style.display = "none";
                         gameOver.style.display = "block";

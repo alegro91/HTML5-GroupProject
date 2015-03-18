@@ -243,6 +243,13 @@ function MainGame(canvasId) {
     var _score = 0;
 
 
+    this.reset = function(){
+        _score = 0;
+        objects = [];
+        _running = false;
+        _prevTime = null;
+    }
+
     this.addGameObject = function (obj) {
         objects.push(obj);
         if(obj.type == "enemy")
