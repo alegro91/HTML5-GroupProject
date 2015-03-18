@@ -322,5 +322,8 @@ table td, table th{
     }
 }
 
-
-
+/* Adds a top margin */
+.topMargin
+{
+    margin-top: 2em;
+}
