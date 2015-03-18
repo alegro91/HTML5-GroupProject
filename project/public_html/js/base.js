@@ -231,7 +231,6 @@ function MainGame(canvasId) {
 
     var objects = [];
     var _this = this;
-    var prevTime = null;
 
     var _enemySpawner = null;
 
@@ -242,6 +241,7 @@ function MainGame(canvasId) {
 
     var _score = 0;
 
+    var _prevTime = null;
 
     this.reset = function(){
         _score = 0;
@@ -273,11 +273,11 @@ function MainGame(canvasId) {
     this.update = function (time) {
 
         var timeDelta = 0;
-        if (prevTime != null) {
-            timeDelta = time - prevTime;
+        if (_prevTime != null) {
+            timeDelta = time - _prevTime;
         }
 
-        prevTime = time;
+        _prevTime = time;
 
         var removed = [];
         // Update objects
