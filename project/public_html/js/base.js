@@ -90,6 +90,9 @@ function GameObject() {
 
     this.stun = function(){
 
+        if(this.stunned)
+            return;
+
         this.stunned = true;
 
         // backup old values
@@ -100,13 +103,13 @@ function GameObject() {
         this.vel.x = 0;
 
         setTimeout(function(){
+            // Reset values
+            _this.vel.x = _vel_x;
+            _this.pos.x = _pos_x
 
             _this.stunned = false;
             _shakeCounter = 0;
 
-            // Reset values
-            _this.vel.x = _vel_x;
-            _this.pos.x = _pos_x
 
         }, this.stunnedTimeout);
     }

@@ -40,7 +40,8 @@ function Castle() {
         if(obj.type == "enemy" && !obj.deleted){
             _currentHp--;
             obj.destroy();
-            this.stun();
+            if(!this.isStunned())
+                this.stun();
         }
     };
 
