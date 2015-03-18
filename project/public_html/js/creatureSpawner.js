@@ -22,7 +22,6 @@ function Spawner(game) {
             if (currentNumberOfEnemies !== lastNumberOfEnemies) {
                 lastNumberOfEnemies = currentNumberOfEnemies;
                 difficulty++;
-                console.log(difficulty);
             }
 
             if (newEnemy < difficulty) {

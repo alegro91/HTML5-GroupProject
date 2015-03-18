@@ -71,6 +71,33 @@
                         game.setEnemySpawner(spawner);
 
                     }
+
+                    function storeHighscore(player, score){
+
+                        var http = new XMLHttpRequest();
+                        var url = "scores.php";
+                        var params = "player="+player+"&score="+score;
+
+                        http.open("POST", url, true);
+                        //Send the proper header information along with the request
+                        http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                        http.setRequestHeader("Content-length", params.length);
+                        http.setRequestHeader("Connection", "close");
+
+                        http.onreadystatechange = function() {
+
+                            if(http.readyState == 4 && http.status == 200) {
+                                alert(http.responseText);
+                            }
+                            else{
+                                alert("Failed to store score.");
+                            }
+                        }
+                        http.send(params);
+
+                    }
+
+
                     var game = new MainGame("gameWorld");
 
                     resetGame(game);
@@ -104,6 +131,7 @@
                         gameScore.innerText = game.getScore();
                         gameCanvas.style.display = "none";
                         gameOver.style.display = "block";
+                        // storeHighscore(game.getScore());
 
                     })
                 </script>
